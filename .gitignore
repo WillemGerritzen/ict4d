@@ -229,3 +229,4 @@ cython_debug/
 
 example1.xml
 example1.php
+out*
