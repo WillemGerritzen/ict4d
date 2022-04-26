@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, request
-from db import conn
+from app.db import conn
 
 app = Flask(__name__)
 
