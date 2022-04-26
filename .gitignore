@@ -227,3 +227,5 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+example1.xml
+example1.php
