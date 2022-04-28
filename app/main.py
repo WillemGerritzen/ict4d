@@ -27,7 +27,7 @@ def xml():
             </form>
         </vxml>
              """
-     return Response(data, mimetype='text/xml')
+     return data
 
 
 @app.route('/json')
@@ -60,7 +60,7 @@ def add_to_db():
        #weather description
         report = data['weather'][0]['description']
     else:
-       #显示错误消息
+        #error
         err = "Error in the HTTP request"
 
     current_weather = """<?xml version="1.0" encoding="UTF-8"?>
