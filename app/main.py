@@ -13,7 +13,7 @@ def hello():
 
     return 'Welcome to My Watchlist!'
 
-@app.route('/xml', methods=['POST'])
+@app.route('/hello.xml')
 def xml():
      data = """<?xml version="1.0" encoding="UTF-8"?>
     <vxml version = "2.1" >
