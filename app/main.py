@@ -27,7 +27,7 @@ def xml():
             </form>
         </vxml>
              """
-     return data, {'mimetype'='text/xml'}
+     return data, {'Content-Type'='text/xml'}
 
 
 @app.route('/json')
