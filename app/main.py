@@ -8,7 +8,7 @@ import json
 app = Flask(__name__)
 
 class MyResponse(Response):
-    default_mimetype = 'application/xml'
+    default_mimetype = 'text/xml'
 
 @app.route('/')
 def hello():
