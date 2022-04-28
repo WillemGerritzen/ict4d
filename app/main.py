@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request
+from flask import Flask, request, Response
 from app.db import conn
 from app.get_weather_info import *
 import json
@@ -12,6 +12,21 @@ app = Flask(__name__)
 def hello():
 
     return 'Welcome to My Watchlist!'
+
+@app.route('/xml')
+def xml():
+     data = """<?xml version="1.0" encoding="UTF-8"?>
+    <vxml version = "2.1" >
+    <form>
+    <block>
+    <prompt>
+    Hello World!
+    </prompt>
+    </block>
+    </form>
+    </vxml>
+             """
+     return Response(data, mimetype='text/xml')
 
 @app.route('/db', methods=['POST'])
 def add_to_db():
