@@ -7,8 +7,8 @@ import json
 
 app = Flask(__name__)
 
-#class MyResponse(Response):
-#    default_mimetype = 'text/xml'
+class MyResponse(Response):
+    default_mimetype = 'text/xml'
 
 @app.route('/')
 def hello():
@@ -35,7 +35,7 @@ def json():
     data = {"weather": "the weather is good"}
     return jsonify(data)
 
-@app.route('/citydata', methods=['GET', 'POST'])
+@app.route('/citydata')
 def add_to_db():
     CITY = "Sikasso"
     # base URL
