@@ -31,7 +31,7 @@ def xml():
 
 @app.route('/json')
 def json():
-    data = {'weather': "the weather is good"}
+    data = {"weather": "the weather is good"}
     return Response(json.dumps(data), mimetype='json')
 
 @app.route('/db', methods=['POST'])
