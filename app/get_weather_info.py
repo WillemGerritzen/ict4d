@@ -32,7 +32,7 @@ def get_weather(query, days=1):
             'date': day_weather['applicable_date'],
             'the_temp': round(day_weather['the_temp'], 2),
             'weather_state_name': day_weather['weather_state_name'],
-            'wind_spped': round(day_weather['wind_speed'], 2),
+            'wind_speed': round(day_weather['wind_speed'], 2),
             'wind_direction': day_weather['wind_direction_compass'],
             'humidity': round(day_weather['humidity'], 2)
         })
