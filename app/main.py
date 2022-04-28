@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 from app.db import conn
 from app.get_weather_info import *
 import json
@@ -32,7 +32,7 @@ def xml():
 @app.route('/json')
 def json():
     data = {"weather": "the weather is good"}
-    return Response(json.dumps(data), mimetype='json')
+    return jsonify(data)
 
 @app.route('/db', methods=['POST'])
 def add_to_db():
