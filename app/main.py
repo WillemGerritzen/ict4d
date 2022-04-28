@@ -29,7 +29,7 @@ def xml():
      return Response(data, mimetype='text/xml')
 
 
-@app.route('/xml')
+@app.route('/json')
 def json():
     data = {'weather': "the weather is good"}
     return Response(data, mimetype='json')
