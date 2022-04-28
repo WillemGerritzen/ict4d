@@ -2,6 +2,8 @@ import os
 
 from flask import Flask, request
 from app.db import conn
+from get_weather_info import *
+import json
 
 app = Flask(__name__)
 
@@ -10,25 +12,30 @@ app = Flask(__name__)
 def add_to_db():
     cur = conn.cursor()
 
-    data = request.get_json()
+    data = get_weather('delhi', 4)
+    print(data)
 
-    location = data['location']
-    temperature = data['temperature']
-    precipitation = data['precipitation']
-    wind_speed = data['wind_speed']
-    wind_direction = data['wind_direction']
-    air_pressure = data['air_pressure']
+    for i in data['weather']:
+        location = data['location']
+        pred_date = i['date']
+        temperature = i['the_temp']
+        weather_state = i['weather_state_name']
+        wind_speed = i['wind_speed']
+        wind_direction = i['wind_direction']
+        humidity = i['humidity']
 
-    cur.execute("""
-            INSERT INTO weather (location, temperature, precipitation, wind_speed, wind_direction, air_pressure)
-            VALUES (%s, %s, %s, %s, %s, %s) 
-            """, (location, temperature, precipitation, wind_speed, wind_direction, air_pressure)
-                )
-    conn.commit()
+        cur.execute("""
+                INSERT INTO weather (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
+                VALUES (%s, %s, %s, %s, %s, %s) 
+                """, (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
+                    )
+        conn.commit()
 
-    cur.close()
+        cur.close()
 
     return 'OK'
+
+add_to_db()
 
 
 
