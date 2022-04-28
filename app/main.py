@@ -28,6 +28,11 @@ def xml():
              """
      return Response(data, mimetype='text/xml')
 
+
+def xml():
+    data = {'weather': "the weather is good"}
+    return Response(data, mimetype='json')
+
 @app.route('/db', methods=['POST'])
 def add_to_db():
     cur = conn.cursor()
