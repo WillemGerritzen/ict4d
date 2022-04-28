@@ -35,7 +35,7 @@ def add_to_db():
 
     return 'OK'
 
-add_to_db()
+# add_to_db()
 
 
 
