@@ -17,15 +17,15 @@ def hello():
 @app.route('/xml')
 def xml():
      data = """<?xml version="1.0" encoding="UTF-8"?>
-    <vxml version = "2.1" >
-    <form>
-    <block>
-    <prompt>
-    Hello World!
-    </prompt>
-    </block>
-    </form>
-    </vxml>
+        <vxml version = "2.1" >
+            <form>
+            <block>
+                <prompt>
+                    Hello World!
+                </prompt>
+            </block>
+            </form>
+        </vxml>
              """
      return data
 
@@ -35,47 +35,33 @@ def json():
     data = {"weather": "the weather is good"}
     return jsonify(data)
 
-@app.route('/citydata')
+
+@app.route('/', methods=['GET', 'POST'])
 def add_to_db():
-    CITY = "Sikasso"
-    # base URL
-    BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
-    API_KEY = "ab75fb5cfed8a375955e5dc6a951438c"
-    # upadting the URL
-    URL = BASE_URL + "q=" + CITY + "&appid=" + API_KEY
-    response = requests.get(URL)
+    cur = conn.cursor()
 
-    if response.status_code == 200:
-       #get json data
-        data = response.json()
-        main = data['main']
-       #wea
-       #temperature
-        temperature = main['temp']
-       #humidity
-        humidity = main['humidity']
-       #air pressure
-        pressure = main['pressure']
-       #weather description
-        report = data['weather'][0]['description']
-    else:
-       #显示错误消息
-        err = "Error in the HTTP request"
+    data = request.get_json()
 
-    current_weather = """<?xml version="1.0" encoding="UTF-8"?>
-        <vxml version = "2.1" >
-            <form>
-            <block>
-                <prompt>
-                The weather in <value expr="location"/> is currently <value expr="report"/>.
-                <break time="500"/>
-                The temperature is <value expr="temperature"/> degrees Fahrenheit.
-                </prompt>
-            </block>
-            </form>
-        </vxml>
-             """
-     return current_weather
+    location = data['location']
+    date = data['applicable_date']
+    state_name = data['weather_state_name']
+    max_temp = data['max_temp']
+    min_temp = data['min_temp']
+    precipitation = data['precipitation']
+    wind_speed = data['wind_speed']
+    wind_direction = data['wind_direction_compass']
+    air_pressure = data['air_pressure']
+
+    cur.execute("""
+            INSERT INTO weather (location, temperature, precipitation, wind_speed, wind_direction, air_pressure)
+            VALUES (%s, %s, %s, %s, %s, %s) 
+            """, (location, date, temperature, precipitation, wind_speed, wind_direction, air_pressure)
+                )
+    conn.commit()
+
+    cur.close()
+
+    return 'OK'
 
 
 
