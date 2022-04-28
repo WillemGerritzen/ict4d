@@ -2,13 +2,18 @@ import os
 
 from flask import Flask, request
 from app.db import conn
-from get_weather_info import *
+from app.get_weather_info import *
 import json
 
 app = Flask(__name__)
 
 
-@app.route('/', methods=['POST'])
+@app.route('/')
+def hello():
+
+    return 'Welcome to My Watchlist!'
+
+@app.route('/db', methods=['POST'])
 def add_to_db():
     cur = conn.cursor()
 
@@ -26,7 +31,7 @@ def add_to_db():
 
         cur.execute("""
                 INSERT INTO weather (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
-                VALUES (%s, %s, %s, %s, %s, %s) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s) 
                 """, (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
                     )
         conn.commit()
