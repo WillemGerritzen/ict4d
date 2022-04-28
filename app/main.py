@@ -27,7 +27,7 @@ def xml():
     </form>
     </vxml>
              """
-     return data, {mimetype='text/xml'}
+     return data
 
 
 @app.route('/json')
@@ -75,7 +75,7 @@ def add_to_db():
             </form>
         </vxml>
              """
-     return current_weather, {mimetype='text/xml'}
+     return current_weather
 
 
 
