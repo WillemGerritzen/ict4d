@@ -37,7 +37,7 @@ def json():
 
 @app.route('/citydata', methods=['GET', 'POST'])
 def add_to_db():
-    CITY = request.get("location")
+    CITY = "Sikasso"
     # base URL
     BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
     API_KEY = "ab75fb5cfed8a375955e5dc6a951438c"
@@ -76,7 +76,6 @@ def add_to_db():
         </vxml>
              """
      return current_weather, {mimetype='text/xml'}
-    return 
 
 
 
