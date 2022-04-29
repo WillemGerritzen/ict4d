@@ -46,11 +46,9 @@ def add_to_db():
     URL = BASE_URL + "q=" + CITY + "&appid=" + API_KEY
     response = requests.get(URL)
 
-    
-        err = "Error in the HTTP request"
-        data = {"weather": err}
+   
 
-    return jsonify(data)
+    return response.status_code
 
 
 
