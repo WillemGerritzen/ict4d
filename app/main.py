@@ -86,13 +86,13 @@ def getcity():
     student = request.get_json()
 
     with open('city.txt','w') as f:
-        f.write(location)
+        f.write("location")
 
     print('_______________________________')
     print('success')
     print(location)
 
-    return location
+    return "OK"
 
 
 
