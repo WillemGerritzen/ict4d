@@ -56,6 +56,8 @@ def getcity():
     loc = request.get_json()
     city = loc['location']
 
+
+    print(loc)
     return city
 
 @app.route('/getweather/', methods=['GET'])
