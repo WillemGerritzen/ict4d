@@ -49,10 +49,13 @@ def add_to_db():
     if response.status_code == 200:
         #get json data
         data = response.json()
+        main = data['main']
+        #wea
+        #temperature
         
-        data = {"weather": "Error in the HTTP request"}
+        city_data = {"weather": "Error in the HTTP request"}
 
-    return jsonify(data)
+    return jsonify(city_data)
 
 
 
