@@ -85,7 +85,7 @@ def getweather():
     for i in load_weather:
         if i['name'] == mycity:
             description = i['weather'][0]['description']
-            temperature = int(i['main']['temp'] - 273.15)
+            temperature = str(int(i['main']['temp'] - 273.15))
             humidity = i['main']['humidity']
             pressure = i['main']['pressure']
 
