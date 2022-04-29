@@ -58,6 +58,7 @@ def getcity():
         return ('fail')
     loc = request.get_json()
     city = loc['location']
+<<<<<<< HEAD
     print(loc)
     # 获取到POST过来的数据，因为我这里传过来的数据需要转换一下编码。根据晶具体情况而定
     # student_json = json.loads(student)
@@ -66,36 +67,40 @@ def getcity():
     #    f.write(city)
 
     
+=======
+    with open('city.txt','w') as f:
+        f.write(city)
+>>>>>>> 8b073ae885d126800bb9db3ae1b779622dba3463
     return city
 
-# @app.route('/getweather/', methods=['POST'])
-# def getweather():
-#     # if not request.data:  # 检测是否有数据
-#     #     return ('fail')
-#     # city = request.get_json()
+@app.route('/getweather/', methods=['GET'])
+def getweather():
+    # if not request.data:  # 检测是否有数据
+    #     return ('fail')
+    # city = request.get_json()
 
-#     #with open('city.txt','r') as f:
-#     #    mycity = f.read() 
-#     #mycity = mycity.strip('\n')
-#     #city_num = g.get('city',None)
+    #with open('city.txt','r') as f:
+    #    mycity = f.read() 
+    #mycity = mycity.strip('\n')
+    #city_num = g.get('city',None)
 
-#     # APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-#     # load_weather = json.load(open(APP_ROOT))
-#     # with open(os.path.join(APP_STATIC_TXT, 'demo.json')) as f:
-#     #         load_weather = json.load(f)
+    # APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    # load_weather = json.load(open(APP_ROOT))
+    # with open(os.path.join(APP_STATIC_TXT, 'demo.json')) as f:
+    #         load_weather = json.load(f)
+    load_weather = {"coord": {"lon": -11, "lat": 14}, "weather": [{"id": 800, "main": "Clear", "description": "clear sky", "icon": "01d"}], "base": "stations", "main": {"temp": 312.58, "feels_like": 310.95, "temp_min": 312.58, "temp_max": 312.58, "pressure": 1006, "humidity": 17, "sea_level": 1006, "grnd_level": 984}, "visibility": 10000, "wind": {"speed": 2.78, "deg": 133, "gust": 2.03}, "clouds": {"all": 0}, "dt": 1651241672, "sys": {"country": "ML", "sunrise": 1651213378, "sunset": 1651258772}, "timezone": 0, "id": 2455517, "name": "Kayes", "cod": 200}
+    # for i in range(len(load_weather)):
+    #     if i == city_num:
+    mycity = load_weather['name']
+    description = load_weather['weather'][0]['description']
+    temperature = str(int(load_weather['main']['temp'] - 273.15))
+    humidity = load_weather['main']['humidity']
+    pressure = load_weather['main']['pressure']
 
-#     # for i in range(len(load_weather)):
-#     #     if i == city_num:
-#     #         mycity = load_weather[i]['name']
-#     #         description = load_weather[i]['weather'][0]['description']
-#     #         temperature = str(int(load_weather[i]['main']['temp'] - 273.15))
-#     #         humidity = load_weather[i]['main']['humidity']
-#     #         pressure = load_weather[i]['main']['pressure']
+    weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
+    data = {"weather": "city_num"}
 
-#     #weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
-#     data = {"weather": "city_num"}
-
-#     return jsonify(data)
+    return jsonify(data)
 
 
 
