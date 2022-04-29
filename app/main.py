@@ -52,23 +52,20 @@ def getdata():
     print(student)
     return student
 
-@app.route('/getcity/', methods=['POST'])
+@app.route('/getcity/', methods=['GET', 'POST'])
 def getcity():
     if not request.data:  # 检测是否有数据
         return ('fail')
     loc = request.get_json()
     city = loc['location']
-    g.city = city
     # 获取到POST过来的数据，因为我这里传过来的数据需要转换一下编码。根据晶具体情况而定
     # student_json = json.loads(student)
     # 把区获取到的数据转为JSON格式。
     #with open('city.txt','w') as f:
     #    f.write(city)
 
-    print('_______________________________')
-    print('success')
-    print(city)
-    return city
+    data = {"weather": city}
+    return jsonify(data)
 
 @app.route('/getweather/', methods=['POST'])
 def getweather():
@@ -79,7 +76,7 @@ def getweather():
     #with open('city.txt','r') as f:
     #    mycity = f.read() 
     #mycity = mycity.strip('\n')
-    city_num = g.get('city',None)
+    #city_num = g.get('city',None)
 """
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     load_weather = json.load(open(APP_ROOT))
@@ -95,7 +92,7 @@ def getweather():
             pressure = load_weather[i]['main']['pressure']
 """
     #weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
-    data = {"weather": city_num}
+    data = {"weather": "city_num"}
 
     return jsonify(data)
 
