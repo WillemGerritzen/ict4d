@@ -90,7 +90,7 @@ def getweather():
             pressure = i['main']['pressure']
 
     weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
-    data = {"weather": weather_report}
+    data = {"weather": mycity}
 
     return jsonify(data)
 
