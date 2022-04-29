@@ -4,13 +4,13 @@
     <!-- set input to DTMF-->
     <property name="inputmodes" value="dtmf"/>
 
-    <!-- event for location selection-->
-    <catch event="location_selected">
+        <!-- event for location selection-->
+    <catch event="langauge_selected">
         <prompt>
         You have selected <value expr="_message"/>
         </prompt>
-        <assign name="location" expr="_message"/>
-        <goto next="#switch_lang"/>
+        <assign name="language" expr="_message"/>
+        <goto next="#menu_location"/>
     </catch>
 
     <!-- end event-->
@@ -19,6 +19,22 @@
     </catch>
 
     <!-- main menu-->
+    <!-- language -->
+    <menu id="switch_lang" scope="dialog">
+      <!-- product list-->
+        <prompt>
+            <enumerate>
+                <break time="750"/>
+                For <value expr="_prompt"/>, Press <value expr="_dtmf"/>
+            </enumerate>
+        </prompt>
+
+      <!-- comment -->
+        <choice next="#weather" dtmf="1"> English</choice>
+        <choice next="#weather_fr" dtmf="2"> French</choice>
+    </menu>
+
+    <!-- location -->
     <menu id="menu_location" scope="dialog">
         <prompt>
             <break time="1000"/>
@@ -39,19 +55,7 @@
         <choice event="location_selected" dtmf="3" message="Bamako">Bamako</choice>
     </menu>
 
-    <menu id="switch_lang" scope="dialog">
-      <!-- product list-->
-      <prompt>
-      <enumerate>
-      <break time="750"/>
-      For <value expr="_prompt"/>, Press <value expr="_dtmf"/>
-      </enumerate>
-      </prompt>
-
-      <!-- comment -->
-      <choice next="#weather" dtmf="1"> English</choice>
-      <choice next="#weather_fr" dtmf="2"> French</choice>
-</menu>
+    
 
     <!-- Weather for selected location-->
     <menu id="weather" scope="dialog" dtmf="true">

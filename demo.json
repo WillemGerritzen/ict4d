@@ -1,0 +1,135 @@
+[
+{
+    "coord": {
+        "lon": -11,
+        "lat": 14
+    },
+    "weather": [
+        {
+            "id": 800,
+            "main": "Clear",
+            "description": "clear sky",
+            "icon": "01d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 312.58,
+        "feels_like": 310.95,
+        "temp_min": 312.58,
+        "temp_max": 312.58,
+        "pressure": 1006,
+        "humidity": 17,
+        "sea_level": 1006,
+        "grnd_level": 984
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 2.78,
+        "deg": 133,
+        "gust": 2.03
+    },
+    "clouds": {
+        "all": 0
+    },
+    "dt": 1651241672,
+    "sys": {
+        "country": "ML",
+        "sunrise": 1651213378,
+        "sunset": 1651258772
+    },
+    "timezone": 0,
+    "id": 2455517,
+    "name": "Kayes",
+    "cod": 200
+},
+{
+    "coord": {
+        "lon": 135.8049,
+        "lat": 34.6851
+    },
+    "weather": [
+        {
+            "id": 804,
+            "main": "Clouds",
+            "description": "overcast clouds",
+            "icon": "04n"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 285.02,
+        "feels_like": 283.75,
+        "temp_min": 281.32,
+        "temp_max": 285.09,
+        "pressure": 1012,
+        "humidity": 57,
+        "sea_level": 1012,
+        "grnd_level": 1005
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 5.73,
+        "deg": 329,
+        "gust": 12.71
+    },
+    "clouds": {
+        "all": 100
+    },
+    "dt": 1651241673,
+    "sys": {
+        "type": 2,
+        "id": 20513,
+        "country": "JP",
+        "sunrise": 1651176546,
+        "sunset": 1651225143
+    },
+    "timezone": 32400,
+    "id": 1855612,
+    "name": "Nara",
+    "cod": 200
+},
+{
+    "coord": {
+        "lon": -8,
+        "lat": 12.65
+    },
+    "weather": [
+        {
+            "id": 801,
+            "main": "Clouds",
+            "description": "few clouds",
+            "icon": "02d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 311.38,
+        "feels_like": 310.85,
+        "temp_min": 311.38,
+        "temp_max": 311.38,
+        "pressure": 1010,
+        "humidity": 23
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 3.09,
+        "deg": 360
+    },
+    "clouds": {
+        "all": 20
+    },
+    "dt": 1651241673,
+    "sys": {
+        "type": 1,
+        "id": 2354,
+        "country": "ML",
+        "sunrise": 1651212747,
+        "sunset": 1651257962
+    },
+    "timezone": 0,
+    "id": 2460596,
+    "name": "Bamako",
+    "cod": 200
+}
+]
