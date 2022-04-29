@@ -79,12 +79,15 @@ def getweather():
     #with open('city.txt','r') as f:
     #    mycity = f.read() 
     #mycity = mycity.strip('\n')
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, 'static', 'demo.json')
-    load_weather = json.load(open(json_url))
+    city_num = g.get('city',None)
+
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    load_weather = json.load(open(APP_ROOT))
+    with open(os.path.join(APP_STATIC_TXT, 'demo.json')) as f:
+            load_weather = json.load(f)
 
     for i in range(len(load_weather)):
-        if i == 1:
+        if i == city_num:
             mycity = load_weather[i]['name']
             description = load_weather[i]['weather'][0]['description']
             temperature = str(int(load_weather[i]['main']['temp'] - 273.15))
