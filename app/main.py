@@ -90,9 +90,9 @@ def getcity():
 
     print('_______________________________')
     print('success')
-    print(location)
+    print(city)
 
-    return "OK"
+    return city
 
 
 
