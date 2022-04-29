@@ -58,7 +58,7 @@ def getcity():
         return ('fail')
     loc = request.get_json()
     city = loc['location']
-<<<<<<< HEAD
+
     print(loc)
     # 获取到POST过来的数据，因为我这里传过来的数据需要转换一下编码。根据晶具体情况而定
     # student_json = json.loads(student)
@@ -66,11 +66,7 @@ def getcity():
     #with open('city.txt','w') as f:
     #    f.write(city)
 
-    
-=======
-    with open('city.txt','w') as f:
-        f.write(city)
->>>>>>> 8b073ae885d126800bb9db3ae1b779622dba3463
+
     return city
 
 @app.route('/getweather/', methods=['GET'])
