@@ -44,8 +44,8 @@ def getdata():
     # 获取到POST过来的数据，因为我这里传过来的数据需要转换一下编码。根据晶具体情况而定
     # student_json = json.loads(student)
     # 把区获取到的数据转为JSON格式。
-    # with open('file.txt','w') as f:
-    #     f.write('success')
+    with open('file.txt','w') as f:
+        f.write('success')
 
     print('_______________________________')
     print('success')
@@ -79,22 +79,6 @@ def add_to_db():
 
     return 'OK'
 
-@app.route('/getcity/',methods = ['POST'])
-def getdata():
-    if not request.data:  # 检测是否有数据
-        return ('fail')
-    student = request.get_json()
-
-    # 获取到POST过来的数据，因为我这里传过来的数据需要转换一下编码。根据晶具体情况而定
-    # student_json = json.loads(student)
-    # 把区获取到的数据转为JSON格式。
-    with open('city.txt','w') as f:
-        f.write('success')
-
-    print('_______________________________')
-    print('success')
-    print(student)
-    return student
 
 
 
