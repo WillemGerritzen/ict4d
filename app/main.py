@@ -52,32 +52,23 @@ def getdata():
     print(student)
     return student
 
-@app.route('/db/', methods=['POST'])
-def add_to_db():
-    cur = conn.cursor()
+@app.route('/getcity/', methods=['POST'])
+def getcity():
+    if not request.data:  # 检测是否有数据
+        return ('fail')
+    city = request.get_json()
 
-    data = get_weather('delhi', 4)
-    print(data)
+    # 获取到POST过来的数据，因为我这里传过来的数据需要转换一下编码。根据晶具体情况而定
+    # student_json = json.loads(student)
+    # 把区获取到的数据转为JSON格式。
+    with open('city.txt','w') as f:
+        f.write('success')
 
-    for i in data['weather']:
-        location = data['location']
-        pred_date = i['date']
-        temperature = i['the_temp']
-        weather_state = i['weather_state_name']
-        wind_speed = i['wind_speed']
-        wind_direction = i['wind_direction']
-        humidity = i['humidity']
+    print('_______________________________')
+    print('success')
+    print(city)
+    return city
 
-        cur.execute("""
-                INSERT INTO weather (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
-                VALUES (%s, %s, %s, %s, %s, %s, s%) 
-                """, (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
-                    )
-        conn.commit()
-
-        cur.close()
-
-    return 'OK'
 
 
 
