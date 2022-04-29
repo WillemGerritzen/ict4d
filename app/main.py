@@ -34,6 +34,18 @@ def json():
     data = {"weather": "the weather is good"}
     return jsonify(data)
 
+@app.route('/getdata/',methods = ['POST'])
+def getdata():
+    if not request.data:  # 检测是否有数据
+        return ('fail')
+    student = request.get_json()
+    # 获取到POST过来的数据，因为我这里传过来的数据需要转换一下编码。根据晶具体情况而定
+    # student_json = json.loads(student)
+    # 把区获取到的数据转为JSON格式。
+    with open('file.txt','w') as f:
+        f.write('success')
+    return student
+
 @app.route('/db', methods=['POST'])
 def add_to_db():
     cur = conn.cursor()
