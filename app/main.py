@@ -1,5 +1,5 @@
 import os
-
+import requests
 from flask import Flask, request, Response, jsonify
 from app.db import conn
 from app.get_weather_info import *
@@ -7,26 +7,27 @@ import json
 
 app = Flask(__name__)
 
+class MyResponse(Response):
+    default_mimetype = 'text/xml'
 
 @app.route('/')
 def hello():
-
     return 'Welcome to My Watchlist!'
 
 @app.route('/xml')
 def xml():
      data = """<?xml version="1.0" encoding="UTF-8"?>
-    <vxml version = "2.1" >
-    <form>
-    <block>
-    <prompt>
-    Hello World!
-    </prompt>
-    </block>
-    </form>
-    </vxml>
+        <vxml version = "2.1" >
+            <form>
+            <block>
+                <prompt>
+                    Hello World!
+                </prompt>
+            </block>
+            </form>
+        </vxml>
              """
-     return Response(data, mimetype='text/xml')
+     return data
 
 
 @app.route('/json')
@@ -44,9 +45,9 @@ def getdata():
     # 把区获取到的数据转为JSON格式。
     with open('file.txt','w') as f:
         f.write('success')
-    return stud
+    return student
 
-@app.route('/db', methods=['POST'])
+@app.route('/db/', methods=['POST'])
 def add_to_db():
     cur = conn.cursor()
 
@@ -64,7 +65,7 @@ def add_to_db():
 
         cur.execute("""
                 INSERT INTO weather (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
-                VALUES (%s, %s, %s, %s, %s, %s, %s) 
+                VALUES (%s, %s, %s, %s, %s, %s) 
                 """, (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
                     )
         conn.commit()
@@ -73,7 +74,9 @@ def add_to_db():
 
     return 'OK'
 
-# add_to_db()
+
+
+
 
 
 
