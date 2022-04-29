@@ -80,7 +80,7 @@ def getweather():
     #    mycity = f.read() 
     #mycity = mycity.strip('\n')
     city_num = g.get('city',None)
-
+"""
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     load_weather = json.load(open(APP_ROOT))
     with open(os.path.join(APP_STATIC_TXT, 'demo.json')) as f:
@@ -93,9 +93,9 @@ def getweather():
             temperature = str(int(load_weather[i]['main']['temp'] - 273.15))
             humidity = load_weather[i]['main']['humidity']
             pressure = load_weather[i]['main']['pressure']
-
-    weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
-    data = {"weather": weather_report}
+"""
+    #weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
+    data = {"weather": city_num}
 
     return jsonify(data)
 
