@@ -79,20 +79,6 @@ def add_to_db():
 
     return 'OK'
 
-@app.route('/getcity/', methods=['POST'])
-def getcity():
-    if not request.data: 
-        return ('fail')
-    student = request.get_json()
-
-    with open('city.txt','w') as f:
-        f.write("location")
-
-    print('_______________________________')
-    print('success')
-    print(city)
-
-    return city
 
 
 
