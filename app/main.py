@@ -44,8 +44,8 @@ def getdata():
     # 获取到POST过来的数据，因为我这里传过来的数据需要转换一下编码。根据晶具体情况而定
     # student_json = json.loads(student)
     # 把区获取到的数据转为JSON格式。
-    with open('file.txt','w') as f:
-        f.write('success')
+    # with open('file.txt','w') as f:
+    #     f.write('success')
 
     print('_______________________________')
     print('success')
@@ -70,7 +70,7 @@ def add_to_db():
 
         cur.execute("""
                 INSERT INTO weather (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
-                VALUES (%s, %s, %s, %s, %s, %s) 
+                VALUES (%s, %s, %s, %s, %s, %s, s%) 
                 """, (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
                     )
         conn.commit()
