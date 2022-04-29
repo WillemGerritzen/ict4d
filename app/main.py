@@ -62,14 +62,39 @@ def getcity():
     # student_json = json.loads(student)
     # 把区获取到的数据转为JSON格式。
     with open('city.txt','w') as f:
-        f.write('success')
+        f.write(city)
 
     print('_______________________________')
     print('success')
     print(city)
     return city
 
+@app.route('/getweather/', methods=['POST'])
+def getcity():
+    # if not request.data:  # 检测是否有数据
+    #     return ('fail')
+    # city = request.get_json()
 
+    with open('city.txt','r') as f:
+        mycity = f.read() 
+    mycity = mycity.strip('\n')
+
+    with open('demo.json','r') as load_f:
+        load_weather = json.load(load_f)
+
+    for i in load_weather:
+        if i['name']+ == mycity:
+            description = i['weather'][0]['description']
+            temperature = int(i['main']['temp'] - 273.15)
+            humidity = i['main']['humidity']
+            pressure = i['main']['pressure']
+
+    weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Fahrenheit."
+    data = {"weather": weather_report}
+
+    
+
+    return jsonify(data)
 
 
 
