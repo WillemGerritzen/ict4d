@@ -47,25 +47,7 @@ def add_to_db():
     response = requests.get(URL)
 
     if response.status_code == 200:
-        #get json data
-        data = response.json()
-        main = data['main']
-        #wea
-        #temperature
-        temperature = main['temp']
-        #humidity
-        humidity = main['humidity']
-        #air pressure
-        pressure = main['pressure']
-        #weather description
-        description = data['weather'][0]['description']
-        #report
-        weather_report = "The weather in " + CITY +" is currently " + description + 
-        ", and the temperature is " + temperature + " degrees Fahrenheit."
-
-        data = {"weather": "The weather in"}
-    else:
-        #error
+       
         data = {"weather": "Error in the HTTP request"}
 
     return jsonify(data)
