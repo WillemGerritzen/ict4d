@@ -83,7 +83,7 @@ def getweather():
         load_weather = json.load(load_f)
 
     for i in load_weather:
-        if i['name']+ == mycity:
+        if i['name'] == mycity:
             description = i['weather'][0]['description']
             temperature = int(i['main']['temp'] - 273.15)
             humidity = i['main']['humidity']
