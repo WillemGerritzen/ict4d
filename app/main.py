@@ -59,8 +59,7 @@ def add_to_db():
         #weather description
         description = data['weather'][0]['description']
         #report
-        weather_report = "The weather in " + CITY +" is currently " + description + 
-        ", and the temperature is " + temperature + " degrees Fahrenheit."
+        weather_report = "The weather in " + CITY +" is currently " + description + ", and the temperature is " + temperature + " degrees Fahrenheit."
 
         city_data = {"weather": "the weather in "}
     else:
