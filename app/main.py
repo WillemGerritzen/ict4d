@@ -64,8 +64,8 @@ def getcity():
     #with open('city.txt','w') as f:
     #    f.write(city)
 
-    data = {"weather": loc}
-    return jsonify(data)
+    
+    return city
 
 # @app.route('/getweather/', methods=['POST'])
 # def getweather():
