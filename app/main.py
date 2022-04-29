@@ -47,7 +47,9 @@ def add_to_db():
     response = requests.get(URL)
 
     if response.status_code == 200:
-       
+        #get json data
+        data = response.json()
+        
         data = {"weather": "Error in the HTTP request"}
 
     return jsonify(data)
