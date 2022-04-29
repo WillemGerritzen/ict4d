@@ -80,7 +80,7 @@ def getweather():
     #    mycity = f.read() 
     #mycity = mycity.strip('\n')
 
-    with open('demo.json','r') as load_f:
+    with open('./demo.json','r') as load_f:
         load_weather = json.load(load_f)
 
     for i in range(len(load_weather)):
