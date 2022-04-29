@@ -58,8 +58,7 @@ def getcity():
         return ('fail')
     loc = request.get_json()
     city = loc['location']
-    with open('city.txt','w') as f:
-        f.write(city)
+    
     return city
 
 @app.route('/getweather/', methods=['GET'])
@@ -86,8 +85,8 @@ def getweather():
     humidity = load_weather['main']['humidity']
     pressure = load_weather['main']['pressure']
 
-    weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
-    data = {"weather": "city_num"}
+    weather_report = "The weather in " + mycity +" is currently " + description + ". The temperature is " + temperature + " degrees Celsius."
+    data = {"weather": weather_report}
 
     return jsonify(data)
 
