@@ -60,13 +60,15 @@ def add_to_db():
         #weather description
         description = data['weather'][0]['description']
         #report
-        weather_report = "The weather in " + CITY is " currently " + description + 
+        weather_report = "The weather in " + CITY +" is currently " + description + 
         ", and the temperature is " + temperature + " degrees Fahrenheit."
+
+        data = {"weather": weather_report}
     else:
         #error
         err = "Error in the HTTP request"
+        data = {"weather": err}
 
-    data = {"weather": weather_report}
     return jsonify(data)
 
 
