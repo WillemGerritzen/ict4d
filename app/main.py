@@ -36,6 +36,41 @@ def json():
     return jsonify(data)
 
 
+@app.route('/city')
+def add_to_db():
+
+    CITY = "Sikasso"
+    BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
+    API_KEY = "ab75fb5cfed8a375955e5dc6a951438c"
+    # upadting the URL
+    URL = BASE_URL + "q=" + CITY + "&appid=" + API_KEY
+    response = requests.get(URL)
+
+    if response.status_code == 200:
+        #get json data
+        data = response.json()
+        main = data['main']
+        #wea
+        #temperature
+        temperature = main['temp']
+        #humidity
+        humidity = main['humidity']
+        #air pressure
+        pressure = main['pressure']
+        #weather description
+        description = data['weather'][0]['description']
+        #report
+        weather_report = "The weather in " + CITY +" is currently " + description + 
+        ", and the temperature is " + temperature + " degrees Fahrenheit."
+
+        #data = {"weather": weather_report}
+    else:
+        #error
+        err = "Error in the HTTP request"
+        data = {"weather": err}
+
+    return jsonify(data)
+
 
 
 
