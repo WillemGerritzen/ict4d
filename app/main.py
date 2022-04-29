@@ -60,7 +60,7 @@ def getcity():
     print(loc)
     return city
 
-@app.route('/getweather/', methods=['GET'])
+@app.route('/getweather/')
 def getweather():
     # if not request.data:  
     #     return ('fail')
