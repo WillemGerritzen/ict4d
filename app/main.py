@@ -36,7 +36,7 @@ def json():
     return jsonify(data)
 
 
-@app.route('/city', methods=['GET', 'POST'])
+@app.route('/city')
 def add_to_db():
 
     CITY = "Sikasso"
@@ -47,36 +47,27 @@ def add_to_db():
     response = requests.get(URL)
 
     if response.status_code == 200:
-       #get json data
+        #get json data
         data = response.json()
         main = data['main']
-       #wea
-       #temperature
+        #wea
+        #temperature
         temperature = main['temp']
-       #humidity
+        #humidity
         humidity = main['humidity']
-       #air pressure
+        #air pressure
         pressure = main['pressure']
-       #weather description
-        report = data['weather'][0]['description']
+        #weather description
+        description = data['weather'][0]['description']
+        #report
+        weather_report = "The weather in " + CITY is " currently " + description + 
+        ", and the temperature is " + temperature + " degrees Fahrenheit."
     else:
         #error
         err = "Error in the HTTP request"
 
-    current_weather = """<?xml version="1.0" encoding="UTF-8"?>
-        <vxml version = "2.1" >
-            <form>
-            <block>
-                <prompt>
-                The weather in {location} is currently {report}.
-                <break time="500"/>
-                The temperature is {temperature} degrees Fahrenheit.
-                </prompt>
-            </block>
-            </form>
-        </vxml>
-        """
-    return current_weather
+    data = {"weather": weather_report}
+    return jsonify(data)
 
 
 
