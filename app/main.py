@@ -70,7 +70,7 @@ def getcity():
     return city
 
 @app.route('/getweather/', methods=['POST'])
-def getcity():
+def getweather():
     # if not request.data:  # 检测是否有数据
     #     return ('fail')
     # city = request.get_json()
@@ -89,10 +89,8 @@ def getcity():
             humidity = i['main']['humidity']
             pressure = i['main']['pressure']
 
-    weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Fahrenheit."
+    weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
     data = {"weather": weather_report}
-
-    
 
     return jsonify(data)
 
