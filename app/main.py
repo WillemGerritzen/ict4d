@@ -64,37 +64,37 @@ def getcity():
     #with open('city.txt','w') as f:
     #    f.write(city)
 
-    data = {"weather": city}
+    data = {"weather": loc}
     return jsonify(data)
 
-@app.route('/getweather/', methods=['POST'])
-def getweather():
-    # if not request.data:  # 检测是否有数据
-    #     return ('fail')
-    # city = request.get_json()
+# @app.route('/getweather/', methods=['POST'])
+# def getweather():
+#     # if not request.data:  # 检测是否有数据
+#     #     return ('fail')
+#     # city = request.get_json()
 
-    #with open('city.txt','r') as f:
-    #    mycity = f.read() 
-    #mycity = mycity.strip('\n')
-    #city_num = g.get('city',None)
-"""
-    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-    load_weather = json.load(open(APP_ROOT))
-    with open(os.path.join(APP_STATIC_TXT, 'demo.json')) as f:
-            load_weather = json.load(f)
+#     #with open('city.txt','r') as f:
+#     #    mycity = f.read() 
+#     #mycity = mycity.strip('\n')
+#     #city_num = g.get('city',None)
 
-    for i in range(len(load_weather)):
-        if i == city_num:
-            mycity = load_weather[i]['name']
-            description = load_weather[i]['weather'][0]['description']
-            temperature = str(int(load_weather[i]['main']['temp'] - 273.15))
-            humidity = load_weather[i]['main']['humidity']
-            pressure = load_weather[i]['main']['pressure']
-"""
-    #weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
-    data = {"weather": "city_num"}
+#     # APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+#     # load_weather = json.load(open(APP_ROOT))
+#     # with open(os.path.join(APP_STATIC_TXT, 'demo.json')) as f:
+#     #         load_weather = json.load(f)
 
-    return jsonify(data)
+#     # for i in range(len(load_weather)):
+#     #     if i == city_num:
+#     #         mycity = load_weather[i]['name']
+#     #         description = load_weather[i]['weather'][0]['description']
+#     #         temperature = str(int(load_weather[i]['main']['temp'] - 273.15))
+#     #         humidity = load_weather[i]['main']['humidity']
+#     #         pressure = load_weather[i]['main']['pressure']
+
+#     #weather_report = "The weather in " + mycity +" is currently " + description + ", and the temperature is " + temperature + " degrees Celsius."
+#     data = {"weather": "city_num"}
+
+#     return jsonify(data)
 
 
 
