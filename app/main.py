@@ -45,6 +45,9 @@ def getdata():
     # 把区获取到的数据转为JSON格式。
     with open('file.txt','w') as f:
         f.write('success')
+
+    print('_______________________________')
+    print('success')
     return student
 
 @app.route('/db/', methods=['POST'])
