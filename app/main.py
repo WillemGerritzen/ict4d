@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, request, Response, jsonify, g
+from flask import Flask, request, Response, jsonify
 from app.db import conn
 from app.get_weather_info import *
 import json
@@ -52,7 +52,7 @@ def getdata():
     print(student)
     return student
 
-@app.route('/getcity/', methods=['GET', 'POST'])
+@app.route('/getcity/', methods=['POST'])
 def getcity():
     if not request.data:  # 检测是否有数据
         return ('fail')
