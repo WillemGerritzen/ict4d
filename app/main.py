@@ -86,7 +86,7 @@ def getweather():
     pressure = str(load_weather['main']['pressure'])
 
     weather_report = " is currently " + description + ". The temperature is " + temperature + " degrees Celsius. The wind speed is " + wind_speed + " kilometers per hour. The humidity is " + humidity + " percent. The air pressure is " + pressure + " hectopascal."
-    data = {"weather": weather_report}
+    data = {"weather": weather_report, "temp": load_weather['main']['temp'] - 273.15, "wind": load_weather['wind']['speed']}
 
     return jsonify(data)
 
