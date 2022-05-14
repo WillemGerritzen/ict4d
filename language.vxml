@@ -3,6 +3,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.w3.org/2001/vxml
    http://www.w3.org/TR/voicexml20/vxml.xsd">
+<!-- +31 20 8082848 -->
+<!-- 9990521878 -->
+
 
 <menu>
   <property name="language" value="dtmf"/>
