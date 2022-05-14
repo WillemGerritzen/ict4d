@@ -3,6 +3,8 @@
 
     <!-- set input to DTMF-->
     <property name="inputmodes" value="dtmf"/>
+    <var name = "location"/>
+    <var name = "response"/>
 
     <!-- event for location selection-->
     <catch event="location_selected">
@@ -10,39 +12,29 @@
         You have selected <value expr="_message"/>
         </prompt>
         <assign name="location" expr="_message"/>
-        <goto next="#weather"/>
+        <goto next="#backend"/>
     </catch>
+
 
     <!-- end event-->
     <catch event="end">
         <disconnect/>
     </catch>
 
-    <menu id="switch_lang" scope="dialog">
-      <!-- product list-->
-      <prompt>
-      <enumerate>
-      <break time="750"/>
-      For <value expr="_prompt"/>, Press <value expr="_dtmf"/>
-      </enumerate>
-      </prompt>
-      
-      <!-- comment -->
-      <choice next="#menu_location" dtmf="1"> English</choice>
-      <choice next="#weather_fr" dtmf="2"> French</choice>
-    </menu>
 
     <!-- main menu-->
+
+    <!-- location -->
     <menu id="menu_location" scope="dialog">
         <prompt>
-            <break time="1000"/>
+            <break time="500"/>
             Please select your location
         </prompt>
 
         <!-- location list-->
         <prompt>
             <enumerate>
-                <break time="1000"/>
+                <break time="500"/>
                 For <value expr="_prompt"/>, Press <value expr="_dtmf"/>
             </enumerate>
         </prompt>
@@ -54,27 +46,37 @@
         <choice event="location_selected" dtmf="4" message="Ségou">Ségou</choice>
         <choice event="location_selected" dtmf="5" message="Kayes">Kayes</choice>        
         <choice event="location_selected" dtmf="6" message="Nara">Nara</choice>
-        
-        <goto next="#weather"/>
     </menu>
 
-    <!-- call php with data-->
-    <form id="weather">
-        <subdialog name="theweather" src="static.php"/>
+    <!-- Send data -->
+    <form id="backend">
         <block>
-            <value expr="theweather.myweather">.
+            <data src="https://hows-the-weather-tmmr.herokuapp.com/getcity/" method="post" enctype="application/json" namelist="location"/>
+            <goto next="#weather"/>
         </block>
     </form>
 
+    <!-- Get weather report -->
+    <form id="weather">
+        <block>
+        <data name="response" src="https://hows-the-weather-tmmr.herokuapp.com/getweather/" method="get" enctype="application/json"/>
+            <prompt> 
+            <break/>
+                The temperature in <value expr="location"/> is <value expr="response.temp"/> degree.
+            </prompt>
 
-    <menu id="weather_fr" scope="dialog" dtmf="true">
-        <prompt>
-            <break time="1000"/>
-            To hear weather for another area, Press 1
-            <break time="1000"/>
-            To Finish, Press 2
-        </prompt>
-        <choice next="#menu_location"/>
+            <goto next="#last"/>
+
+        </block>
+    </form>
+    
+    <menu id="last" scope="dialog" dtmf="true">
+    <prompt>    
+        To hear weather for another area, Press 1.
+            <break/>
+            To Finish, Press 2.
+    </prompt>
+    <choice next="#menu_location"/>
         <choice event="end"/>
     </menu>
 

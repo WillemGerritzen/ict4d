@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1" xml:lang="fr-fr">
+
+    <!-- set input to DTMF-->
+    <property name="inputmodes" value="dtmf"/>
+    <var name = "location"/>
+
+    <catch event="location_selected_fr">
+        <prompt>
+        Vous avez sélectionné <value expr="_message"/>
+        </prompt>
+        <assign name="location_fr" expr="_message"/>
+        <goto next="#weather_fr"/>
+    </catch>
+ 
+    <!-- end event-->
+    <catch event="end">
+        <disconnect/>
+    </catch>
+
+ 
+
+    <menu id="menu_location_fr" scope="dialog">
+        <prompt>
+            <!-- you have selected French -->
+            Vous avez choisi le français.
+            <break/>
+        </prompt>
+
+        <!-- location list-->
+        <prompt>
+            <enumerate>
+                <!-- please select your location -->
+                Veuillez sélectionner votre emplacement.
+                <break/>
+                Pour <value expr="_prompt"/>, appuyez sur <value expr="_dtmf"/>.
+            </enumerate>
+        </prompt>
+
+        <!-- Choices -->
+    <choice event="location_selected_fr" dtmf="1" message="Bamako">Bamako</choice>
+        <choice event="location_selected_fr" dtmf="2" message="Sikasso">Sikasso</choice>
+        <choice event="location_selected_fr" dtmf="3" message="Kalabancoro">Kalabancoro</choice>
+        <choice event="location_selected_fr" dtmf="4" message="Ségou">Ségou</choice>
+        <choice event="location_selected_fr" dtmf="5" message="Kayes">Kayes</choice>        
+        <choice event="location_selected_fr" dtmf="6" message="Nara">Nara</choice>
+    </menu>
+
+
+    <form id="weather_fr">
+    <block>
+    <data name="response" src="https://hows-the-weather-tmmr.herokuapp.com/getweather/" method="get" enctype="application/json"/>
+        <prompt>
+            <break/>
+            <!-- The weather in xx is currently light rain. -->
+            Le temps à <value expr="location_fr"/> est actuellement de la pluie fine.
+            <break/>
+            <!-- The temperature is 39 degrees Celsius -->
+            La température est de <value expr="response.temp"/> degrés Celsius.
+            <break/>
+            <!-- The wind speed is three kilometers per hour from the west. -->
+            La vitesse du vent est de trois kilomètres par heure, de l'ouest.
+            <break/>
+            <!-- The air pressure is 1008 hectopascals. -->
+            La pression de l'air est de 1008 hectopascals.
+            <break/>
+    </prompt>
+    <goto next="#last"/>
+    </block>
+    </form>
+
+
+    <menu id="last" scope="dialog" dtmf="true">
+        <prompt>
+            <!--To hear weather for another area, Press 1 -->
+            Pour entendre la météo d'une autre région, appuyez sur 1.
+            <break/>
+            <!--To Finish, Press 2 -->
+            Pour terminer, appuyez sur 2.
+        </prompt>
+        <choice next="#menu_location_fr"/>
+        <choice event="end"/>
+    </menu>
+
+</vxml>

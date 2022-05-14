@@ -2,11 +2,7 @@ import os
 import requests
 from flask import Flask, request, Response, jsonify
 from app.db import conn
-<<<<<<< HEAD
 from app.get_weather_info import *
-=======
-from get_weather_info import *
->>>>>>> ab534071c71b98eca2ca2d8d0a1860d6c232dc2b
 import json
 
 app = Flask(__name__)
@@ -41,7 +37,7 @@ def json():
 
 @app.route('/getdata/',methods = ['POST'])
 def getdata():
-    if not request.data:  # 检测是否有数据
+    if not request.data:  
         return ('fail')
     student = request.get_json()
 
@@ -60,7 +56,6 @@ def getcity():
     loc = request.get_json()
     city = loc['location']
 
-
     print(loc)
     return city
 
@@ -70,7 +65,6 @@ def getweather():
     #     return ('fail')
     # city = request.get_json()
 
-<<<<<<< HEAD
     #with open('city.txt','r') as f:
     #    mycity = f.read() 
     #mycity = mycity.strip('\n')
@@ -91,34 +85,10 @@ def getweather():
     pressure = str(load_weather['main']['pressure'])
 
     weather_report = " is currently " + description + ". The temperature is " + temperature + " degrees Celsius. The wind speed is " + wind_speed + " kilometers per hour. The humidity is " + humidity + " percent. The air pressure is " + pressure + " hectopascal."
-    data = {"weather": weather_report}
+    data = {"weather": weather_report, "temp": int(load_weather['main']['temp'] - 273.15), "wind": load_weather['wind']['speed']}
 
     return jsonify(data)
-=======
-    data = get_weather('delhi', 4)
-    print(data)
 
-    for i in data['weather']:
-        location = data['location']
-        pred_date = i['date']
-        temperature = i['the_temp']
-        weather_state = i['weather_state_name']
-        wind_speed = i['wind_speed']
-        wind_direction = i['wind_direction']
-        humidity = i['humidity']
-
-        cur.execute("""
-                INSERT INTO weather (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
-                VALUES (%s, %s, %s, %s, %s, %s) 
-                """, (location, pred_date, temperature, weather_state, wind_speed, wind_direction, humidity)
-                    )
-        conn.commit()
-
-        cur.close()
->>>>>>> ab534071c71b98eca2ca2d8d0a1860d6c232dc2b
-
-
-add_to_db()
 
 
 

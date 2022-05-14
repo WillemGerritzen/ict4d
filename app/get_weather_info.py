@@ -1,4 +1,6 @@
 import requests
+import pandas as pd
+from app.connect_db import *
 
 BASE_URL = "https://www.metaweather.com/api/"
 LOCATION_SEARCH_URL = BASE_URL + "location/search/"
@@ -32,11 +34,7 @@ def get_weather(query, days=1):
             'date': day_weather['applicable_date'],
             'the_temp': round(day_weather['the_temp'], 2),
             'weather_state_name': day_weather['weather_state_name'],
-<<<<<<< HEAD
             'wind_speed': round(day_weather['wind_speed'], 2),
-=======
-            'wind_spped': round(day_weather['wind_speed'], 2),
->>>>>>> ab534071c71b98eca2ca2d8d0a1860d6c232dc2b
             'wind_direction': day_weather['wind_direction_compass'],
             'humidity': round(day_weather['humidity'], 2)
         })
@@ -57,5 +55,14 @@ def print_weather_details(data):
 
 
 if __name__ == '__main__':
-	a = get_weather('delhi', 4)
-	print(a)
+    a = get_weather('delhi', 4)
+    print(a['weather'])
+    df = pd.DataFrame(a['weather'])
+    df['location'] = a['location']
+    conn = PostgresBaseManager().engine
+    df.to_sql(
+        "day_weather",  # table name
+        con=conn,
+        if_exists='replace',
+        index=False  # In order to avoid writing DataFrame index as a column
+    )
