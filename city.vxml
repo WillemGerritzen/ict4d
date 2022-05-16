@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1" >
+<var name = "abc"/>
+<form>
+<block>
+<prompt>
+this app is so stupid!
+<break time="100"/>
+</prompt>
+<assign name="city" expr="Naro"/>
+
+<data src="https://hows-the-weather-tmmr.herokuapp.com/getcity/" method="post" 
+enctype="application/json" namelist = "city"/>
+
+
+
+<prompt>
+hello world
+</prompt>
+
+</block>
+</form>
+</vxml>
