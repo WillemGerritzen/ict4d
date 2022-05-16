@@ -51,13 +51,17 @@ def getdata():
 
 @app.route('/getcity/', methods=['POST'])
 def getcity():
-    if not request.data: 
+    if not request.data:
         return ('fail')
-    loc = request.get_json()
-    city = loc['location']
-
-    print(loc)
-    return city
+    query = request.get_json()
+    city = query['location']
+    date = query['date']
+    postgres_manager = PostgresBaseManager()
+    postgres_manager.runServerPostgresDb()
+    id=postgres_manager.insert_data_locationDate(city,date)
+    postgres_manager.closePostgresConnection()
+    # insert into the locationDate Database, and return the query index
+    return {'id':id}
 
 @app.route('/getweather/')
 def getweather():
