@@ -56,12 +56,12 @@ def getcity():
     query = request.get_json()
     city = query['location']
     date = query['date']
-    postgres_manager = PostgresBaseManager()
-    postgres_manager.runServerPostgresDb()
-    id=postgres_manager.insert_data_locationDate(city,date)
-    postgres_manager.closePostgresConnection()
+    # postgres_manager = PostgresBaseManager()
+    # postgres_manager.runServerPostgresDb()
+    # id=postgres_manager.insert_data_locationDate(city,date)
+    # postgres_manager.closePostgresConnection()
     # insert into the locationDate Database, and return the query index
-    return {'id':id}
+    return {'id':123}
 
 @app.route('/getweather/')
 def getweather():
