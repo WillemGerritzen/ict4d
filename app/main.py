@@ -54,8 +54,9 @@ def getcity():
     if not request.data:
         return ('fail')
     query = request.get_json()
-    city = query['location']
-    date = query['date']
+    # city = query['abc']
+    # date = query['date']
+    print(query)
     # postgres_manager = PostgresBaseManager()
     # postgres_manager.runServerPostgresDb()
     # id=postgres_manager.insert_data_locationDate(city,date)
