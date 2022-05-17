@@ -1,9 +1,11 @@
 import requests
 import pandas as pd
 from app.connect_db import *
+
 APIKEY = 'e278b3cd7d40437755cf3f4a91bbd0d3'
 BASE_URL = 'https://api.openweathermap.org/data/2.5/onecall'
 GEO_URL = 'http://api.openweathermap.org/geo/1.0/direct?'
+
 
 
 def get_location(query):
@@ -27,7 +29,6 @@ def get_location(query):
 
 def get_weather(query, days=1):
     """
-    get weather data
     """
     location = get_location(query)
     if location != -1:
@@ -65,11 +66,23 @@ def init_database():
         df = pd.DataFrame(a['weather'])
         df['location'] = a['location']
         df_Result =df_Result.append(df)
+        df_Result.to_sql(
+            "day_weather",  # table name
+            con=conn,
+            if_exists='replace', #every time call is a new database
+            index=False  # In order to avoid writing DataFrame index as a column
+        )
+        print(df_Result)
 
-    df_Result.to_sql(
+if __name__ == '__main__':
+    a = get_weather('delhi', 4)
+    print(a['weather'])
+    df = pd.DataFrame(a['weather'])
+    df['location'] = a['location']
+    conn = PostgresBaseManager().engine
+    df.to_sql(
         "day_weather",  # table name
         con=conn,
-        if_exists='replace', #every time call is a new database
+        if_exists='replace',
         index=False  # In order to avoid writing DataFrame index as a column
     )
-    print(df_Result)

@@ -19,7 +19,7 @@ class PostgresBaseManager:
 
     def connectServerPostgresDb(self):
         """
-        :return: Connect Heroku Postgres SQL 
+        :return: Connect Heroku Postgres SQL
         """
 
         conn = psycopg2.connect(
@@ -61,7 +61,7 @@ class PostgresBaseManager:
         self.runsql(sql)
 
     def insert_data_locationDate(self, location, date):
-        sql = """ INSERT INTO location_date_combine (LOCATION, DATE ) VALUES (%s,%s) RETURNING id """ 
+        sql = """ INSERT INTO location_date_combine (LOCATION, DATE ) VALUES (%s,%s) RETURNING id """
         record_to_insert = (location, date)
         cur=self.conn.cursor()
         self.conn.commit()
@@ -70,7 +70,7 @@ class PostgresBaseManager:
         count = cur.rowcount
         print(count, "Record inserted successfully into LocationDate table")
         id = cur.fetchone()[0]
-        return id 
+        return id
 
 
     def select_data_locationDate(self, id):
@@ -85,7 +85,7 @@ class PostgresBaseManager:
     def select_data_day_weather(self,location,date):
         sql = """ SELECT * FROM day_weather \
             WHERE Location = %s AND Date = %s
-            """ 
+            """
         record_to_insert = (location, date)
         cur = self.conn.cursor()
         cur.execute(sql,record_to_insert)

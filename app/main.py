@@ -2,12 +2,12 @@ import os
 import requests
 from flask import Flask, request, Response, jsonify
 from app.db import conn
+
 import json
 from app.connect_db import *
 from app.get_weather_info import *
 
 app = Flask(__name__)
-
 
 class MyResponse(Response):
     default_mimetype = 'text/xml'
