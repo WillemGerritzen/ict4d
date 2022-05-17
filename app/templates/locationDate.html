@@ -3,22 +3,31 @@
   <form id="consultForm" class="modal-content"  method="POST">
     <div class="container">
       <label for="location"><b>Location</b></label>
-      <input
-        id="location"
-        type="text"
-        placeholder="Enter Location"
-        name="location"
-        required
-      />
+{#      <input#}
+{#        id="location"#}
+{#        type="text"#}
+{#        placeholder="Enter Location"#}
+{#        name="location"#}
+{#        required#}
+{#      />#}
+        <select name="Location">
+        <option value="Sikasso">Sikasso</option>
+        <option value="Ségou">Ségou</option>
+        <option value="Kayes">Kayes</option>
+        <option value="Nara">Nara</option>
+            <option value="Bamako">Bamako</option>
+        </select>
   
       <label for="date"><b>Date</b></label>
-      <input
-        id="date"
-        type="text"
-        placeholder="Enter Date(0~7)"
-        name="date"
-        required
-      />
+       <select name="date">
+        <option value="0">today</option>
+        <option value="1">Tomorrow</option>
+        <option value="2">the day after tomorrow</option>
+        <option value="3">3 days later</option>
+           <option value="4">4 days later</option>
+        <option value="5">5 days later</option>
+        <option value="6">6 days later</option>
+        </select>
   
       <button >Ask Weather</button>
     </div>

@@ -153,7 +153,7 @@ def locationDateForm():
     if request.method == 'GET':
         return render_template('locationDate.html')
     if request.method == 'POST':
-        city = request.form['location']
+        city = request.form['Location']
         date = request.form['date']
         cityList = ['Sikasso', 'Ségou', 'Kayes', 'Nara', 'Bamako']
         dateList = ['0','1','2','3','4','5','6']
@@ -175,3 +175,7 @@ def locationDateForm():
         data['humidity'] = str(load_weather[7])
         return render_template('result.html', city=city, home_url=request.host_url+'webForm', description=data['description'], temperature_min=data['temperature_min'],
                                temperature_max=data['temperature_max'], wind_speed=data['wind_speed'], humidity=data['humidity'])
+
+
+if __name__=='__main__':
+    app.run()
