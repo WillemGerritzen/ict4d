@@ -79,7 +79,7 @@ def getWeatherReportNew():
     elif date == "2":
         data['date'] = "tomorrow"
     else:
-        data['date'] = "the day after"
+        data['date'] = "the day after tomorrow"
         
     # weather_report = " is currently " + description + ". The temperature is " + temperature_min+'~'+temperature_max + " degrees Celsius. The wind speed is " + \
     #     wind_speed + " kilometers per hour. The humidity is " + humidity + \
