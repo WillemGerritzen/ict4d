@@ -64,6 +64,7 @@ def getWeatherReportNew():
     load_weather = postgres_manager.select_data_day_weather(
         date=row[1], location=row[2])
     #load_weather=postgres_manager.select_data_day_weather(date='2022-05-04',location='New Delhi')
+
     postgres_manager.closePostgresConnection()
     data = {}
     data['description'] = load_weather[3]
@@ -72,6 +73,14 @@ def getWeatherReportNew():
     data['wind_speed'] = str(load_weather[6])
     data['humidity'] = str(load_weather[7])
 
+    date=row[1]
+    if date == "1":
+        data['date'] = "today"
+    elif date == "2":
+        data['date'] = "tomorrow"
+    else:
+        data['date'] = "the day after"
+        
     # weather_report = " is currently " + description + ". The temperature is " + temperature_min+'~'+temperature_max + " degrees Celsius. The wind speed is " + \
     #     wind_speed + " kilometers per hour. The humidity is " + humidity + \
     #     " percent. "
