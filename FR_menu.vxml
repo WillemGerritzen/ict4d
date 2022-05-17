@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1" xml:lang="fr-fr">
+
+    <!-- set input to DTMF-->
+    <property name="inputmodes" value="dtmf"/>
+    <var name = "location"/>
+    <var name = "day"/>
+    <var name = "response"/>
+
+    <!-- event for location selection-->
+    <catch event="location_selected_fr">
+        <prompt>
+        Vous avez sélectionné <value expr="_message"/>
+        </prompt>
+        <assign name="location" expr="_message"/>
+        <goto next="#menu_day"/>
+    </catch>
+ 
+    <!-- event for time selection-->
+    <catch event="time_selected">
+        <prompt>
+        Vous avez sélectionné <value expr="_message"/>
+        </prompt>
+        <assign name="day" expr="_message"/>
+        <goto next="#backend"/>
+    </catch>
+
+    <!-- end event-->
+    <catch event="end">
+        <disconnect/>
+    </catch>
+
+ 
+
+    <menu id="menu_location_fr" scope="dialog">
+        <prompt>
+            <!-- you have selected French -->
+            Vous avez choisi le français.
+            <break/>
+        </prompt>
+
+        <!-- location list-->
+        <prompt>
+            <enumerate>
+                <!-- please select your location -->
+                Veuillez sélectionner votre emplacement.
+                <break/>
+                Pour <value expr="_prompt"/>, appuyez sur <value expr="_dtmf"/>.
+            </enumerate>
+        </prompt>
+
+        <!-- Choices -->
+    <choice event="location_selected_fr" dtmf="1" message="Bamako">Bamako</choice>
+        <choice event="location_selected_fr" dtmf="2" message="Sikasso">Sikasso</choice>
+        <choice event="location_selected_fr" dtmf="3" message="Kalabancoro">Kalabancoro</choice>
+        <choice event="location_selected_fr" dtmf="4" message="Ségou">Ségou</choice>
+        <choice event="location_selected_fr" dtmf="5" message="Kayes">Kayes</choice>        
+        <choice event="location_selected_fr" dtmf="6" message="Nara">Nara</choice>
+    </menu>
+
+    <!-- day -->
+    <menu id="menu_day" scope="dialog">
+        <prompt>
+            <break/>
+            Veuillez choisir une heure.
+        </prompt>
+
+        <!-- day list-->
+        <prompt>
+            <enumerate>
+                <break/>
+                Pour <value expr="_prompt"/>, appuyez sur <value expr="_dtmf"/>
+            </enumerate>
+        </prompt>
+
+        <!-- Choices -->
+        <choice event="time_selected" dtmf="1" message="aujourd'hui">aujourd'hui</choice>
+        <choice event="time_selected" dtmf="2" message="demain">demain</choice>
+        <choice event="time_selected" dtmf="3" message="Le jour suivant">Le jour suivant</choice>
+    </menu>
+
+    <!-- Send data -->
+    <form id="backend">
+        <block>
+            <data src="https://hows-the-weather-tmmr.herokuapp.com/getcity/" method="post" enctype="application/json" namelist="location day"/>
+            <goto next="#weather_fr"/>
+        </block>
+    </form>
+
+    <!-- Get weather report -->
+    <form id="weather_fr">
+        <block>
+        <data name="response" src="https://hows-the-weather-tmmr.herokuapp.com/getweather/" method="get" enctype="application/json"/>
+            <prompt>
+                <break/>
+                <!-- The weather in xx is currently light rain. -->
+                Le temps à <value expr="location"/> <value expr="day"/> est ensoleillé.
+                <break/>
+                <!-- The temperature is 39 degrees Celsius -->
+                La température est de <value expr="response.temp"/> degrés Celsius.
+                <break/>
+            </prompt>
+        <goto next="#last"/>
+        </block>
+    </form>
+
+
+    <menu id="last" scope="dialog" dtmf="true">
+        <prompt>
+            <!--To hear weather for another area, Press 1 -->
+            Pour entendre la météo d'une autre région, appuyez sur 1.
+            <break/>
+            <!--To Finish, Press 2 -->
+            Pour terminer, appuyez sur 2.
+        </prompt>
+        <choice next="#menu_location_fr"/>
+        <choice event="end"/>
+    </menu>
+
+</vxml>
