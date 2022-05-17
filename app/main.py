@@ -87,6 +87,40 @@ def getWeatherReportNew():
     # data = {"weather": weather_report}
     return jsonify(data)
 
+@app.route('/getWeatherReportFR/', methods=['POST'])
+def getWeatherReportNew():
+    if not request.data:
+        return ('fail')
+    query = request.get_json()
+    id = query['id']
+    postgres_manager = PostgresBaseManager()
+    postgres_manager.runServerPostgresDb()
+    row = postgres_manager.select_data_locationDate(id)
+    load_weather = postgres_manager.select_data_day_weather(
+        date=row[1], location=row[2])
+    #load_weather=postgres_manager.select_data_day_weather(date='2022-05-04',location='New Delhi')
+
+    postgres_manager.closePostgresConnection()
+    data = {}
+    data['temperature_min'] = str(int(load_weather[4] - 273.15))
+    data['temperature_max'] = str(int(load_weather[5] - 273.15))
+    data['wind_speed'] = str(load_weather[6])
+    data['humidity'] = str(load_weather[7])
+
+    date=row[1]
+    if date == "1":
+        data['date'] = "aujourd'hui"
+    elif date == "2":
+        data['date'] = "demain"
+    else:
+        data['date'] = "le jour suivant"
+        
+    # weather_report = " is currently " + description + ". The temperature is " + temperature_min+'~'+temperature_max + " degrees Celsius. The wind speed is " + \
+    #     wind_speed + " kilometers per hour. The humidity is " + humidity + \
+    #     " percent. "
+    # data = {"weather": weather_report}
+    return jsonify(data)
+
 @app.route('/getWeatherReport/<string:LDId>', methods=['GET'])
 def getWeatherReport(LDId):
     postgres_manager = PostgresBaseManager()
