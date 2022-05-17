@@ -1,23 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<vxml version = "2.1" xmlns="http://www.w3.org/2001/vxml"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.w3.org/2001/vxml
-   http://www.w3.org/TR/voicexml20/vxml.xsd">
-<!-- +31 20 8082848 -->
-<!-- 9990521878 -->
-
-
-<menu>
-  <property name="language" value="dtmf"/>
-  <prompt>
-    Welcome to the weather report system for Mali.
-    <break/>
-    For English, press 1.
-    <!--audio below says 'for french, press 2' in french-->
-    <break/><audio src="Fr2.wav"/>
-  </prompt>
-  <choice dtmf="1" next="EN_menu.vxml"/>
-  <choice dtmf="2" next="FR_menu.vxml"/>
+<?xml version="1.0" ?>
+<vxml version="2.1" xml:lang="en-US"
+xmlns="http://www.w3.org/2001/vxml">
+<menu id="main">
+<prompt>
+Welcome to the weather report system for Mali. 
+<break/>
+choose one of the following, <enumerate/>
+<break/>
+<audio src="Fr2.wav"/> 
+</prompt>
+<choice next="EN_menu.vxml" dtmf="1"> English </choice>
+<choice next="FR_menu.vxml" dtmf="2"> french </choice>
+<choice next="#return" dtmf="3"> Other </choice>
+<noinput>Please say one of <enumerate/>.</noinput>
+    <nomatch>
+      Couldn't understand, please say one of <enumerate/>.
+    </nomatch>
+    <error>An error has occurred <exit/>.</error>
 </menu>
+
+<form id="return" scope="dialog">
+<block>
+<prompt>
+Sorry, other language is not avaible now.
+<break/>
+return to the main menu now.
+</prompt>
+<goto next="#main" />
+</block>
+</form>
+
 
 </vxml>
