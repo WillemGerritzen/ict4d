@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block title %} Create a New Shortener {% endblock
+  %} {% block content %}
+  <form id="consultForm" class="modal-content"  method="POST">
+    <div class="container">
+      <label for="location"><b>Location</b></label>
+      <input
+        id="location"
+        type="text"
+        placeholder="Enter Location"
+        name="location"
+        required
+      />
+  
+      <label for="date"><b>Date</b></label>
+      <input
+        id="date"
+        type="text"
+        placeholder="Enter Date(0~7)"
+        name="date"
+        required
+      />
+  
+      <button >Ask Weather</button>
+    </div>
+  </form>
+  
+  
+  
+  {% endblock %}
+  

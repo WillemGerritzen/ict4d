@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% block title %}404{% endblock %} {% block content %}
+
+<div class="content">
+  <h2>{{city}}</h2>
+  <table>
+    <tr>
+      <th>description</th>
+      <th>temperature_min</th>
+      <th>temperature_max</th>
+      <th>wind_speed</th>
+      <th>humidity</th>
+    </tr>
+
+    <tr>
+      <td>{{ description }}</td>
+      <td>{{ temperature_min }}</td>
+      <td>{{ temperature_max }}</td>
+      <td>{{ wind_speed }}</td>
+      <td>{{ humidity }}</td>
+    </tr>
+  </table>
+</div>
+
+{% endblock %}
