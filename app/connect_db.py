@@ -14,12 +14,12 @@ class PostgresBaseManager:
         self.host = 'ec2-34-247-72-29.eu-west-1.compute.amazonaws.com'
         self.port = '5432'
         self.conn = self.connectServerPostgresDb()
-        self.engine = create_engine("postgresql+psycopg2://" + '{username}:{password}@{host}:{port}/{database}'.format(username = self.user, password =self.password,
-                                                                                                                       host = self.host, port = self.port, database = self.database))
+        self.engine = create_engine("postgresql+psycopg2://" + '{username}:{password}@{host}:{port}/{database}'.format(username=self.user, password=self.password,
+                                                                                                                       host=self.host, port=self.port, database=self.database))
 
     def connectServerPostgresDb(self):
         """
-        :return: 連接 Heroku Postgres SQL 認證用
+        :return: Connect Heroku Postgres SQL 
         """
 
         conn = psycopg2.connect(
@@ -38,7 +38,7 @@ class PostgresBaseManager:
 
     def runServerPostgresDb(self):
         """
-        :return: 測試是否可以連線到 Heroku Postgres SQL
+        :return: Test if connect Heroku Postgres SQL success
         """
         cur = self.conn.cursor()
         cur.execute('SELECT VERSION()')
@@ -47,9 +47,9 @@ class PostgresBaseManager:
         self.conn.commit()
         cur.close()
 
-    def runsql(self,sql):
+    def runsql(self, sql):
         """
-        :return: 測試是否可以連線到 Heroku Postgres SQL
+        :return: Test if connect Heroku Postgres SQL success
         """
         cur = self.conn.cursor()
         cur.execute(sql)
@@ -57,26 +57,62 @@ class PostgresBaseManager:
         self.conn.commit()
         cur.close()
 
-    def create_weather_table(self):
-        sql = '''CREATE TABLE weather_day
-          (ID INT PRIMARY KEY     NOT NULL,
-          DATA           TEXT    NOT NULL,
-          LOCATION         REAL); '''
+    def create_table(self, sql):
         self.runsql(sql)
 
-    def insert_data(self):
-        sql=""" INSERT INTO weather_day (ID, DATA , LOCATION) VALUES (1, 'Iphone12', 1100)
-        """
-        self.runsql(sql)
+    def insert_data_locationDate(self, location, date):
+        sql = """ INSERT INTO location_date_combine (LOCATION, DATE ) VALUES (%s,%s) RETURNING id """ 
+        record_to_insert = (location, date)
+        cur=self.conn.cursor()
+        self.conn.commit()
+        cur.execute(sql, record_to_insert)
+        self.conn.commit()
+        count = cur.rowcount
+        print(count, "Record inserted successfully into LocationDate table")
+        id = cur.fetchone()[0]
+        return id 
 
 
-if __name__ == '__main__':
-    postgres_manager = PostgresBaseManager()
-    postgres_manager.runServerPostgresDb()
-    postgres_manager.closePostgresConnection()
+    def select_data_locationDate(self, id):
+        sql = """ SELECT * FROM location_date_combine \
+            WHERE ID = %s
+            """ % (id)
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        row = cur.fetchone()
+        return row
+
+    def select_data_day_weather(self,location,date):
+        sql = """ SELECT * FROM day_weather \
+            WHERE Location = %s AND Date = %s
+            """ 
+        record_to_insert = (location, date)
+        cur = self.conn.cursor()
+        cur.execute(sql,record_to_insert)
+        self.conn.commit()
+        row = cur.fetchone()
+        count = cur.rowcount
+        print(count, "Record inserted successfully into LocationDate table")
+        return row
+
+
+
+# if __name__ == '__main__':
+#     postgres_manager = PostgresBaseManager()
+#     postgres_manager.runServerPostgresDb()
+    # postgres_manager.closePostgresConnection()
     # postgres_manager.create_weather_table()
-    # postgres_manager.insert_data()
 
+    # Create the LOCATION_DATE_COMBINATION TABLE
+        # locationDateTableSql= '''CREATE TABLE location_date_combine
+        #       (ID SERIAL PRIMARY KEY  NOT NULL,
+        #       DATE           TEXT    NOT NULL,
+        #       LOCATION         TEXT    NOT NULL); '''
+        # postgres_manager.create_table(sql=locationDateTableSql)
+
+
+    # postgres_manager.select_data(2)
+    # postgres_manager.closePostgresConnection()
 
     # get-config
     # heroku_app_name = "hows-the-weather-tmmr"

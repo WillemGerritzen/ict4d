@@ -2,21 +2,25 @@ import os
 import requests
 from flask import Flask, request, Response, jsonify
 from app.db import conn
-from app.get_weather_info import *
 import json
+from app.connect_db import *
+from app.get_weather_info import *
 
 app = Flask(__name__)
 
+
 class MyResponse(Response):
     default_mimetype = 'text/xml'
+
 
 @app.route('/')
 def hello():
     return 'Welcome to My Watchlist!'
 
+
 @app.route('/xml')
 def xml():
-     data = """<?xml version="1.0" encoding="UTF-8"?>
+    data = """<?xml version="1.0" encoding="UTF-8"?>
         <vxml version = "2.1" >
             <form>
             <block>
@@ -27,69 +31,48 @@ def xml():
             </form>
         </vxml>
              """
-     return Response(data, mimetype='text/xml')
+    return Response(data, mimetype='text/xml')
+
+@app.route('/initialize/')
+def initialize():
+    init_database()
 
 
-@app.route('/json')
-def json():
-    data = {"weather": "the weather is good"}
-    return jsonify(data)
-
-@app.route('/getdata/',methods = ['POST'])
-def getdata():
-    if not request.data:  # 检测是否有数据
-        return ('fail')
-    student = request.get_json()
-
-    #with open('file.txt','w') as f:
-    #    f.write('success')
-
-    print('_______________________________')
-    print('success')
-    print(student)
-    return student
-
-@app.route('/getcity/', methods=['POST'])
+@app.route('/insertLocationDate/', methods=['POST'])
 def getcity():
-    if not request.data: 
+    if not request.data:
         return ('fail')
-    loc = request.get_json()
-    city = loc['location']
+    query = request.get_json()
+    city = query['location']
+    date = query['date']
+    postgres_manager = PostgresBaseManager()
+    postgres_manager.runServerPostgresDb()
+    id = postgres_manager.insert_data_locationDate(city, date)
+    postgres_manager.closePostgresConnection()
+    # insert into the locationDate Database, and return the query index
+    return {'id': id}
 
-    print(loc)
-    return city
 
-@app.route('/getweather/')
-def getweather():
-    # if not request.data:  
-    #     return ('fail')
-    # city = request.get_json()
+@app.route('/getWeatherReport/<string:LDId>', methods=['GET'])
+def getWeatherReport(LDId):
+    postgres_manager = PostgresBaseManager()
+    postgres_manager.runServerPostgresDb()
+    row = postgres_manager.select_data_locationDate(LDId)
+    load_weather = postgres_manager.select_data_day_weather(
+        date=row[1], location=row[2])
+    #load_weather=postgres_manager.select_data_day_weather(date='2022-05-04',location='New Delhi')
+    postgres_manager.closePostgresConnection()
+    data = {}
+    data['description'] = load_weather[3]
+    data['temperature_min'] = str(int(load_weather[4] - 273.15))
+    data['temperature_max'] = str(int(load_weather[5] - 273.15))
+    data['wind_speed'] = str(load_weather[6])
+    data['humidity'] = str(load_weather[7])
 
-    #with open('city.txt','r') as f:
-    #    mycity = f.read() 
-    #mycity = mycity.strip('\n')
-    #city_num = g.get('city',None)
-
-    # APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-    # load_weather = json.load(open(APP_ROOT))
-    # with open(os.path.join(APP_STATIC_TXT, 'demo.json')) as f:
-    #         load_weather = json.load(f)
-    load_weather = {"coord": {"lon": -11, "lat": 14}, "weather": [{"id": 800, "main": "Clear", "description": "clear sky", "icon": "01d"}], "base": "stations", "main": {"temp": 312.58, "feels_like": 310.95, "temp_min": 312.58, "temp_max": 312.58, "pressure": 1006, "humidity": 17, "sea_level": 1006, "grnd_level": 984}, "visibility": 10000, "wind": {"speed": 2.78, "deg": 133, "gust": 2.03}, "clouds": {"all": 0}, "dt": 1651241672, "sys": {"country": "ML", "sunrise": 1651213378, "sunset": 1651258772}, "timezone": 0, "id": 2455517, "name": "Kayes", "cod": 200}
-    # for i in range(len(load_weather)):
-    #     if i == city_num:
-    mycity = load_weather['name']
-    description = load_weather['weather'][0]['description']
-    temperature = str(int(load_weather['main']['temp'] - 273.15))
-    wind_speed = str(load_weather['wind']['speed'])
-    humidity = str(load_weather['main']['humidity'])
-    pressure = str(load_weather['main']['pressure'])
-
-    weather_report = " is currently " + description + ". The temperature is " + temperature + " degrees Celsius. The wind speed is " + wind_speed + " kilometers per hour. The humidity is " + humidity + " percent. The air pressure is " + pressure + " hectopascal."
-    data = {"weather": weather_report}
-
+    # weather_report = " is currently " + description + ". The temperature is " + temperature_min+'~'+temperature_max + " degrees Celsius. The wind speed is " + \
+    #     wind_speed + " kilometers per hour. The humidity is " + humidity + \
+    #     " percent. "
+    # data = {"weather": weather_report}
     return jsonify(data)
-
-
-
 
 
