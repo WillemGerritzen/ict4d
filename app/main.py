@@ -57,7 +57,7 @@ def getWeatherReportNew():
     if not request.data:
         return ('fail')
     query = request.get_json()
-    id = query['send.id']
+    id = query['id']
     postgres_manager = PostgresBaseManager()
     postgres_manager.runServerPostgresDb()
     row = postgres_manager.select_data_locationDate(id)
