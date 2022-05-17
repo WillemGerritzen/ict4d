@@ -88,7 +88,7 @@ def getWeatherReportNew():
     return jsonify(data)
 
 @app.route('/getWeatherReportFR/', methods=['POST'])
-def getWeatherReportNew():
+def getWeatherReportNewFR():
     if not request.data:
         return ('fail')
     query = request.get_json()
