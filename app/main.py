@@ -158,12 +158,13 @@ def locationDateForm():
         return render_template('locationDate.html')
     if request.method == 'POST':
         city = request.form['Location']
-        index = int(request.form['date'])-1
+        index = int(request.form['date'])
         today= date.today()
         day = today + timedelta(days=index)
         cityList = ['Sikasso', 'Ségou', 'Kayes', 'Nara', 'Bamako']
         dateList = ['0','1','2','3','4','5','6']
-        if city not in cityList or index not in dateList:
+        if city not in cityList or str(index) not in dateList:
+            print(index)
             return render_template('404.html')
         postgres_manager = PostgresBaseManager()
         postgres_manager.runServerPostgresDb()
