@@ -80,9 +80,10 @@ def getWeatherReportNew():
     data['wind_speed'] = str(load_weather[6])
     data['humidity'] = str(load_weather[7])
     day= datetime.strptime(row[1], '%Y-%m-%d').date()-date.today()
-    if day.days == "0":
+    print(day.days)
+    if day.days == 0:
         data['date'] = "today"
-    elif day.days == "1":
+    elif day.days == 1:
         data['date'] = "tomorrow"
     else:
         data['date'] = "the day after tomorrow"
@@ -115,9 +116,9 @@ def getWeatherReportNewFR():
     data['humidity'] = str(load_weather[7])
 
     day= datetime.strptime(row[1], '%Y-%m-%d').date()-date.today()
-    if day.days == "0":
+    if day.days == 0:
         data['date'] = "aujourd'hui"
-    elif day.days == "1":
+    elif day.days == 1:
         data['date'] = "demain"
     else:
         data['date'] = "le jour suivant"
@@ -169,7 +170,6 @@ def locationDateForm():
         postgres_manager = PostgresBaseManager()
         postgres_manager.runServerPostgresDb()
         id = postgres_manager.insert_data_locationDate(city, day)
-        print(id)
         row = postgres_manager.select_data_locationDate(id)
         load_weather = postgres_manager.select_data_day_weather(
             date=row[1], location=row[2])
