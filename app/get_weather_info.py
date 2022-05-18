@@ -48,7 +48,7 @@ def get_weather(query):
                 'main': day_weather['weather'][0]['main'],
                 'description': day_weather['weather'][0]['description'] ,
                 'temp_min': round(day_weather['temp']['min'], 2),
-                'temp_max': round(day_weather['temp']['min'], 2),
+                'temp_max': round(day_weather['temp']['max'], 2),
                 'wind_speed': round(day_weather['wind_speed'], 2),
                 'humidity': round(day_weather['humidity'], 2)
             })
