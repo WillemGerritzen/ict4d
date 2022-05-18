@@ -37,9 +37,10 @@ def xml():
     return Response(data, mimetype='text/xml')
 
 
-@app.route('/initialize/')
+@app.route('/initialize/',methods=['GET'])
 def initialize():
     init_database()
+    return {"status": "success"}
 
 
 @app.route('/insertLocationDate/', methods=['POST'])
@@ -176,6 +177,7 @@ def locationDateForm():
         # load_weather=postgres_manager.select_data_day_weather(date='2022-05-04',location='New Delhi')
         postgres_manager.closePostgresConnection()
         data = {}
+        print(load_weather)
         data['description'] = load_weather[3]
         data['temperature_min'] = str(int(load_weather[4] - 273.15))
         data['temperature_max'] = str(int(load_weather[5] - 273.15))
