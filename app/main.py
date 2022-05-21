@@ -1,12 +1,14 @@
 import os
 import requests
 from flask import Flask, request, Response, jsonify
+import asyncio
 from app.db import conn
 import json
 from app.connect_db import *
 from app.get_weather_info import *
 from flask import Flask, render_template, request
 app = Flask(__name__)
+from datetime import  datetime,timedelta
 
 
 class MyResponse(Response):
@@ -16,22 +18,6 @@ class MyResponse(Response):
 @app.route('/')
 def hello():
     return 'Welcome to My Watchlist!'
-
-
-@app.route('/xml')
-def xml():
-    data = """<?xml version="1.0" encoding="UTF-8"?>
-        <vxml version = "2.1" >
-            <form>
-            <block>
-                <prompt>
-                    Hello World!
-                </prompt>
-            </block>
-            </form>
-        </vxml>
-             """
-    return Response(data, mimetype='text/xml')
 
 
 @app.route('/initialize/')
@@ -154,10 +140,11 @@ def locationDateForm():
         return render_template('locationDate.html')
     if request.method == 'POST':
         city = request.form['Location']
-        date = request.form['date']
+        days = request.form['date']
+        date = (str(datetime.now().date()+timedelta(days=int(days)))[:10])
         cityList = ['Sikasso', 'Ségou', 'Kayes', 'Nara', 'Bamako']
         dateList = ['0','1','2','3','4','5','6']
-        if city not in cityList or date not in dateList:
+        if city not in cityList or days not in dateList:
             return render_template('404.html')
         postgres_manager = PostgresBaseManager()
         postgres_manager.runServerPostgresDb()
@@ -175,6 +162,13 @@ def locationDateForm():
         data['humidity'] = str(load_weather[7])
         return render_template('result.html', city=city, home_url=request.host_url+'webForm', description=data['description'], temperature_min=data['temperature_min'],
                                temperature_max=data['temperature_max'], wind_speed=data['wind_speed'], humidity=data['humidity'])
+
+
+@app.route('/alert', methods=('GET', 'POST'))
+def Weatheralert():
+    postgres_manager = PostgresBaseManager()
+    info = postgres_manager.get_alert_info()
+    return render_template('alert.html', info=info, home_url=request.host_url+'alert')
 
 
 if __name__=='__main__':

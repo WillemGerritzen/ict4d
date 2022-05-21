@@ -4,6 +4,7 @@ from app.connect_db import *
 APIKEY = 'e278b3cd7d40437755cf3f4a91bbd0d3'
 BASE_URL = 'https://api.openweathermap.org/data/2.5/onecall'
 GEO_URL = 'http://api.openweathermap.org/geo/1.0/direct?'
+from datetime import  datetime,timedelta
 
 
 def get_location(query):
@@ -41,7 +42,7 @@ def get_weather(query, days=1):
         result = {}
         result['location'] = query
         result['weather'] = []
-        dayNumber = 0
+        dayNumber = str(datetime.now().date())
         for day_weather in data['daily']:
             result['weather'].append({
                 'date': dayNumber,
@@ -52,7 +53,7 @@ def get_weather(query, days=1):
                 'wind_speed': round(day_weather['wind_speed'], 2),
                 'humidity': round(day_weather['humidity'], 2)
             })
-            dayNumber = dayNumber + 1
+            dayNumber = str(datetime.strptime(dayNumber,'%Y-%m-%d')+timedelta(days=1))[:10]
         return result
 
 def init_database():
@@ -73,3 +74,32 @@ def init_database():
         index=False  # In order to avoid writing DataFrame index as a column
     )
     print(df_Result)
+
+def process_alert_info():
+    info = ''
+    today = str(datetime.now().date())
+    sql = """select * from day_weather where Date = '%s'
+    """%(today)
+    conn = PostgresBaseManager()
+    df = pd.read_sql(sql,con = conn.engine)
+    if not len(df):
+        return "no origin data"
+    if len(df[df['wind_speed']>18]):
+        info += ','.join(df[df['wind_speed']>18].location.values)+'high wind\n'
+    if len(df[df['temp_max']>313]):
+        info += ','.join(df[df['temp_max']>313].location.values)+'high Temperature\n'
+    if len(df[(df['main']=='rain')&(df['description']=='heavy rain')]):
+        info += ','.join(df[(df['main']=='rain')&(df['description']=='heavy rain')].location.values) + 'heavy rain'
+    if not info:
+        info = 'no info today'
+    sql = """insert into weather_alert ( DATE,info ) VALUES (%s,%s) RETURNING id
+        """
+    record_to_insert = (today,info)
+
+    cur = conn.conn.cursor()
+    conn.conn.commit()
+    cur.execute(sql, record_to_insert)
+    conn.conn.commit()
+    count = cur.rowcount
+    print(count, "Record inserted successfully into weather_alert table")
+    return info
