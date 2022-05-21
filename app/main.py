@@ -20,7 +20,7 @@ def dayLanguageTransfer(date,today):
 
 @app.route('/')
 def hello():
-    return 'Welcome to My Watchlist!'
+    return 'Welcome Weather Report system for Mali!'
 
 
 @app.route('/initialize/')
