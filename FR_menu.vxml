@@ -4,8 +4,11 @@
     <!-- set input to DTMF-->
     <property name="inputmodes" value="dtmf"/>
     <var name = "location"/>
-    <var name = "day"/>
+
+    <var name = "date"/>
     <var name = "response"/>
+    <var name = "id"/>
+
 
     <!-- event for location selection-->
     <catch event="location_selected_fr">
@@ -21,7 +24,9 @@
         <prompt>
         Vous avez sélectionné <value expr="_message"/>
         </prompt>
-        <assign name="day" expr="_message"/>
+
+        <assign name="date" expr="_message"/>
+
         <goto next="#backend"/>
     </catch>
 
@@ -50,12 +55,13 @@
         </prompt>
 
         <!-- Choices -->
-    <choice event="location_selected_fr" dtmf="1" message="Bamako">Bamako</choice>
+
+        <choice event="location_selected_fr" dtmf="1" message="Bamako">Bamako</choice>
         <choice event="location_selected_fr" dtmf="2" message="Sikasso">Sikasso</choice>
-        <choice event="location_selected_fr" dtmf="3" message="Kalabancoro">Kalabancoro</choice>
         <choice event="location_selected_fr" dtmf="4" message="Ségou">Ségou</choice>
-        <choice event="location_selected_fr" dtmf="5" message="Kayes">Kayes</choice>        
+        <choice event="location_selected_fr" dtmf="5" message="Kayes">Kayes</choice>      
         <choice event="location_selected_fr" dtmf="6" message="Nara">Nara</choice>
+
     </menu>
 
     <!-- day -->
@@ -74,15 +80,20 @@
         </prompt>
 
         <!-- Choices -->
-        <choice event="time_selected" dtmf="1" message="aujourd'hui">aujourd'hui</choice>
-        <choice event="time_selected" dtmf="2" message="demain">demain</choice>
-        <choice event="time_selected" dtmf="3" message="Le jour suivant">Le jour suivant</choice>
+
+        <choice event="time_selected" dtmf="1" message="1">aujourd'hui</choice>
+        <choice event="time_selected" dtmf="2" message="2">demain</choice>
+        <choice event="time_selected" dtmf="3" message="3">Le jour suivant</choice>
+
     </menu>
 
     <!-- Send data -->
     <form id="backend">
         <block>
-            <data src="https://hows-the-weather-tmmr.herokuapp.com/getcity/" method="post" enctype="application/json" namelist="location day"/>
+
+            <data name="send" src="https://hows-the-weather-tmmr.herokuapp.com/insertLocationDate/" method="post" enctype="application/json" namelist="location date"/>
+
+
             <goto next="#weather_fr"/>
         </block>
     </form>
@@ -90,14 +101,24 @@
     <!-- Get weather report -->
     <form id="weather_fr">
         <block>
-        <data name="response" src="https://hows-the-weather-tmmr.herokuapp.com/getweather/" method="get" enctype="application/json"/>
+
+        <assign name="id" expr="send.id"/>
+        <data name="response" src="https://hows-the-weather-tmmr.herokuapp.com/getWeatherReportFR/" method="post" enctype="application/json" namelist="id"/>
+
             <prompt>
                 <break/>
-                <!-- The weather in xx is currently light rain. -->
-                Le temps à <value expr="location"/> <value expr="day"/> est ensoleillé.
+                <!-- The weather in xx is as follows. -->
+                Le temps à <value expr="location"/> <value expr="response.date"/> est le suivant.
                 <break/>
-                <!-- The temperature is 39 degrees Celsius -->
-                La température est de <value expr="response.temp"/> degrés Celsius.
+                <!-- The max temperature is xx degrees Celsius and the min temperature is xx degrees Celsius -->
+                La température maximale est de <value expr="response.temperature_max"/> degrés Celsius, et la température minimale de <value expr="response.temperature_min"/> degrés Celsius.
+                <break/>
+                <!-- Wind speed is xx kilometers per hour. -->
+                La vitesse du vent est de <value expr="response.wind_speed"/> kilomètres par heure.
+                <break/>
+                <!-- Humidity is xx %. -->
+                Le taux d'humidité est de <value expr="response.humidity"/> %.
+
                 <break/>
             </prompt>
         <goto next="#last"/>

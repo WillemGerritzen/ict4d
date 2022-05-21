@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version = "2.1">
 
-    <!-- set input to DTMF-->
-    <property name="inputmodes" value="dtmf"/>
+
     <var name = "location"/>
-    <var name = "day"/>
+    <var name = "date"/>
     <var name = "response"/>
+    <var name = "id"/>
+
 
     <!-- event for location selection-->
     <catch event="location_selected">
@@ -21,7 +22,9 @@
         <prompt>
         You have selected <value expr="_message"/>
         </prompt>
-        <assign name="day" expr="_message"/>
+
+        <assign name="date" expr="_message"/>
+
         <goto next="#backend"/>
     </catch>
 
@@ -37,52 +40,65 @@
     <menu id="menu_location" scope="dialog">
         <prompt>
             <break/>
-            Please select your location
+
+            Please select your location.
+            <break/>
+            choose one of the following .<enumerate/>
+            <break/>
         </prompt>
 
         <!-- location list-->
-        <prompt>
-            <enumerate>
-                <break/>
-                For <value expr="_prompt"/>, Press <value expr="_dtmf"/>
-            </enumerate>
-        </prompt>
+
 
         <!-- Choices -->
         <choice event="location_selected" dtmf="1" message="Bamako">Bamako</choice>
         <choice event="location_selected" dtmf="2" message="Sikasso">Sikasso</choice>
-        <choice event="location_selected" dtmf="3" message="Kalabancoro">Kalabancoro</choice>
         <choice event="location_selected" dtmf="4" message="Ségou">Ségou</choice>
-        <choice event="location_selected" dtmf="5" message="Kayes">Kayes</choice>        
-        <choice event="location_selected" dtmf="6" message="Nara">Nara</choice>
+        <choice event="location_selected" dtmf="5" message="Kayes">Kayes</choice>   
+        <choice event="location_selected" dtmf="6" message="Nara">Nara</choice>      
+        
+    <noinput>Please say one of <enumerate/>.</noinput>
+    <nomatch>
+      Couldn't understand, please say one of <enumerate/>.
+    </nomatch>
     </menu>
 
-    <!-- day -->
+    <!-- date -->
     <menu id="menu_day" scope="dialog">
         <prompt>
             <break/>
-            Please select a time.
+                Please select a time. 
+            <break/>
+            say one for today. 
+            <break/>
+            say two for tomorrow.
+            <break/>
+            say three for the day after tomorrow.
+            <break/>
+                choose one of the following <enumerate/>.
+            <break/>
         </prompt>
 
-        <!-- day list-->
-        <prompt>
-            <enumerate>
-                <break/>
-                For <value expr="_prompt"/>, Press <value expr="_dtmf"/>
-            </enumerate>
-        </prompt>
+
 
         <!-- Choices -->
-        <choice event="time_selected" dtmf="1" message="today">today</choice>
-        <choice event="time_selected" dtmf="2" message="tomorrow">tomorrow</choice>
-        <choice event="time_selected" dtmf="3" message="the day after">the day after</choice>
+        <choice event="time_selected" dtmf="1" message="1"> one </choice>
+        <choice event="time_selected" dtmf="2" message="2"> two </choice>
+        <choice event="time_selected" dtmf="3" message="3"> three </choice>
+    <noinput>Please say one of <enumerate/>.</noinput>
+    <nomatch>
+      Couldn't understand, please say one of <enumerate/>.
+    </nomatch>
+    <error>An error has occurred <exit/>.</error>
     </menu>
 
 
     <!-- Send data -->
     <form id="backend">
         <block>
-            <data src="https://hows-the-weather-tmmr.herokuapp.com/getcity/" method="post" enctype="application/json" namelist="location day"/>
+            <data name="send" src="https://hows-the-weather-tmmr.herokuapp.com/insertLocationDate/" method="post" enctype="application/json" namelist="location date"/>
+
+
             <goto next="#weather"/>
         </block>
     </form>
@@ -90,10 +106,20 @@
     <!-- Get weather report -->
     <form id="weather">
         <block>
-        <data name="response" src="https://hows-the-weather-tmmr.herokuapp.com/getweather/" method="get" enctype="application/json"/>
+        <assign name="id" expr="send.id"/>
+        <data name="response" src="https://hows-the-weather-tmmr.herokuapp.com/getWeatherReport/" method="post" enctype="application/json" namelist="id"/>
+
             <prompt> 
-            <break/>
-                The temperature in <value expr="location"/> <value expr="day"/> is <value expr="response.temp"/> degree.
+                <break/>
+                The weather in <value expr="location"/> <value expr="response.date"/> is <value expr="response.description"/>.
+                <break/>
+                The maximum temperatures is <value expr="response.temperature_max"/> degrees Celsius, and the minimum temperature is <value expr="response.temperature_min"/> degrees Celsius.
+                <break/> 
+                Wind speed is <value expr="response.wind_speed"/> kilometers per hour.
+                <break/>
+                Humidity is <value expr="response.humidity"/> percent.
+                <break/>
+
             </prompt>
 
             <goto next="#last"/>
@@ -104,11 +130,13 @@
     <menu id="last" scope="dialog" dtmf="true">
     <prompt>    
         To hear weather for another area, Press 1.
-            <break/>
-            To Finish, Press 2.
+        <break/>
+        To Finish, Press 2.
     </prompt>
     <choice next="#menu_location"/>
         <choice event="end"/>
     </menu>
 
+
 </vxml>
+

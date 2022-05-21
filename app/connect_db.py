@@ -6,6 +6,7 @@ from datetime import datetime
 from app.get_weather_info import *
 
 
+
 class PostgresBaseManager:
 
     def __init__(self):
@@ -22,6 +23,7 @@ class PostgresBaseManager:
     def connectServerPostgresDb(self):
         """
         :return: Connect Heroku Postgres SQL 
+
         """
 
         conn = psycopg2.connect(
@@ -64,6 +66,7 @@ class PostgresBaseManager:
 
     def insert_data_locationDate(self, location, date):
         sql = """ INSERT INTO location_date_combine (LOCATION, DATE ) VALUES (%s,%s) RETURNING id """ 
+
         record_to_insert = (location, date)
         cur=self.conn.cursor()
         self.conn.commit()
@@ -73,6 +76,7 @@ class PostgresBaseManager:
         print(count, "Record inserted successfully into LocationDate table")
         id = cur.fetchone()[0]
         return id
+
 
     def get_alert_info(self):
         today = str(datetime.now().date())
@@ -90,6 +94,7 @@ class PostgresBaseManager:
         init_database()
         info = process_alert_info()
         return info
+
 
 
     def select_data_locationDate(self, id):
@@ -115,7 +120,7 @@ class PostgresBaseManager:
         return row
 
 
-#
+
 if __name__ == '__main__':
     postgres_manager = PostgresBaseManager()
     postgres_manager.runServerPostgresDb()
@@ -142,9 +147,10 @@ if __name__ == '__main__':
     postgres_manager.closePostgresConnection()
 
 
+
     # postgres_manager.select_data(2)
     # postgres_manager.closePostgresConnection()
-    #
+
     # get-config
     # heroku_app_name = "hows-the-weather-tmmr"
     # raw_db_url = subprocess.run(

@@ -1,12 +1,15 @@
 import os
 import requests
 from flask import Flask, request, Response, jsonify
-import asyncio
-from app.db import conn
+
 import json
 from app.connect_db import *
 from app.get_weather_info import *
 from flask import Flask, render_template, request
+
+
+
+
 app = Flask(__name__)
 from datetime import  datetime,timedelta,date
 
@@ -172,12 +175,12 @@ def locationDateForm():
         return render_template('result.html', city=city, home_url=request.host_url+'webForm', description=data['description'], temperature_min=data['temperature_min'],
                                temperature_max=data['temperature_max'], wind_speed=data['wind_speed'], humidity=data['humidity'])
 
-
 @app.route('/alert', methods=('GET', 'POST'))
 def Weatheralert():
     postgres_manager = PostgresBaseManager()
     info = postgres_manager.get_alert_info()
     return render_template('alert.html', info=info, home_url=request.host_url+'alert')
+
 
 
 if __name__=='__main__':
