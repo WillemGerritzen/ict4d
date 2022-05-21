@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version = "2.1">
 
+
     <var name = "location"/>
     <var name = "date"/>
     <var name = "response"/>
     <var name = "id"/>
+
 
     <!-- event for location selection-->
     <catch event="location_selected">
@@ -20,7 +22,9 @@
         <prompt>
         You have selected <value expr="_message"/>
         </prompt>
+
         <assign name="date" expr="_message"/>
+
         <goto next="#backend"/>
     </catch>
 
@@ -36,6 +40,7 @@
     <menu id="menu_location" scope="dialog">
         <prompt>
             <break/>
+
             Please select your location.
             <break/>
             choose one of the following .<enumerate/>
@@ -43,6 +48,7 @@
         </prompt>
 
         <!-- location list-->
+
 
         <!-- Choices -->
         <choice event="location_selected" dtmf="1" message="Bamako">Bamako</choice>
@@ -92,6 +98,7 @@
         <block>
             <data name="send" src="https://hows-the-weather-tmmr.herokuapp.com/insertLocationDate/" method="post" enctype="application/json" namelist="location date"/>
 
+
             <goto next="#weather"/>
         </block>
     </form>
@@ -112,6 +119,7 @@
                 <break/>
                 Humidity is <value expr="response.humidity"/> percent.
                 <break/>
+
             </prompt>
 
             <goto next="#last"/>
@@ -129,4 +137,6 @@
         <choice event="end"/>
     </menu>
 
+
 </vxml>
+

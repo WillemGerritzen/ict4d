@@ -4,9 +4,11 @@
     <!-- set input to DTMF-->
     <property name="inputmodes" value="dtmf"/>
     <var name = "location"/>
+
     <var name = "date"/>
     <var name = "response"/>
     <var name = "id"/>
+
 
     <!-- event for location selection-->
     <catch event="location_selected_fr">
@@ -22,7 +24,9 @@
         <prompt>
         Vous avez sélectionné <value expr="_message"/>
         </prompt>
+
         <assign name="date" expr="_message"/>
+
         <goto next="#backend"/>
     </catch>
 
@@ -51,6 +55,7 @@
         </prompt>
 
         <!-- Choices -->
+
         <choice event="location_selected_fr" dtmf="1" message="Bamako">Bamako</choice>
         <choice event="location_selected_fr" dtmf="2" message="Sikasso">Sikasso</choice>
         <choice event="location_selected_fr" dtmf="4" message="Ségou">Ségou</choice>
@@ -75,15 +80,19 @@
         </prompt>
 
         <!-- Choices -->
+
         <choice event="time_selected" dtmf="1" message="1">aujourd'hui</choice>
         <choice event="time_selected" dtmf="2" message="2">demain</choice>
         <choice event="time_selected" dtmf="3" message="3">Le jour suivant</choice>
+
     </menu>
 
     <!-- Send data -->
     <form id="backend">
         <block>
+
             <data name="send" src="https://hows-the-weather-tmmr.herokuapp.com/insertLocationDate/" method="post" enctype="application/json" namelist="location date"/>
+
 
             <goto next="#weather_fr"/>
         </block>
@@ -92,6 +101,7 @@
     <!-- Get weather report -->
     <form id="weather_fr">
         <block>
+
         <assign name="id" expr="send.id"/>
         <data name="response" src="https://hows-the-weather-tmmr.herokuapp.com/getWeatherReportFR/" method="post" enctype="application/json" namelist="id"/>
 
@@ -108,6 +118,7 @@
                 <break/>
                 <!-- Humidity is xx %. -->
                 Le taux d'humidité est de <value expr="response.humidity"/> %.
+
                 <break/>
             </prompt>
         <goto next="#last"/>

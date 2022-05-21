@@ -2,6 +2,9 @@ import psycopg2
 import subprocess
 import json
 from sqlalchemy.engine.create import create_engine
+from datetime import datetime
+from app.get_weather_info import *
+
 
 
 class PostgresBaseManager:
@@ -19,7 +22,8 @@ class PostgresBaseManager:
 
     def connectServerPostgresDb(self):
         """
-        :return: Connect Heroku Postgres SQL
+        :return: Connect Heroku Postgres SQL 
+
         """
 
         conn = psycopg2.connect(
@@ -61,7 +65,8 @@ class PostgresBaseManager:
         self.runsql(sql)
 
     def insert_data_locationDate(self, location, date):
-        sql = """ INSERT INTO location_date_combine (LOCATION, DATE ) VALUES (%s,%s) RETURNING id """
+        sql = """ INSERT INTO location_date_combine (LOCATION, DATE ) VALUES (%s,%s) RETURNING id """ 
+
         record_to_insert = (location, date)
         cur=self.conn.cursor()
         self.conn.commit()
@@ -71,6 +76,25 @@ class PostgresBaseManager:
         print(count, "Record inserted successfully into LocationDate table")
         id = cur.fetchone()[0]
         return id
+
+
+    def get_alert_info(self):
+        today = str(datetime.now().date())
+        sql = """ SELECT * FROM weather_alert \
+                    WHERE DATE = '%s'
+                    """ %(today)
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        info = cur.fetchone()
+        if not info:
+            info = self.check_alert_info()
+        return info[2]
+
+    def check_alert_info(self):
+        init_database()
+        info = process_alert_info()
+        return info
+
 
 
     def select_data_locationDate(self, id):
@@ -97,18 +121,31 @@ class PostgresBaseManager:
 
 
 
-# if __name__ == '__main__':
-#     postgres_manager = PostgresBaseManager()
-#     postgres_manager.runServerPostgresDb()
-    # postgres_manager.closePostgresConnection()
-    # postgres_manager.create_weather_table()
+if __name__ == '__main__':
+    postgres_manager = PostgresBaseManager()
+    postgres_manager.runServerPostgresDb()
+    info = postgres_manager.get_alert_info()
+    print(info)
 
-    # Create the LOCATION_DATE_COMBINATION TABLE
-        # locationDateTableSql= '''CREATE TABLE location_date_combine
-        #       (ID SERIAL PRIMARY KEY  NOT NULL,
-        #       DATE           TEXT    NOT NULL,
-        #       LOCATION         TEXT    NOT NULL); '''
-        # postgres_manager.create_table(sql=locationDateTableSql)
+
+    # locationDateTableSql = '''
+    # CREATE TABLE location_date_combine
+    #               (ID SERIAL PRIMARY KEY  NOT NULL,
+    #               DATE           TEXT    NOT NULL,
+    #               LOCATION         TEXT    NOT NULL); '''
+    # postgres_manager.create_table(sql=locationDateTableSql)
+
+    # AlertSql = '''CREATE TABLE weather_alert
+    #                   (ID SERIAL PRIMARY KEY  NOT NULL,
+    #                   DATE      text   NOT NULL,
+    #                   Info        VARCHAR    NOT NULL); '''
+
+    # AlertSql = """ALTER TABLE day_weather ALTER COLUMN date TYPE text;"""
+    # sql = """delete from day_weather"""
+    # postgres_manager.create_table(sql=sql)
+
+    postgres_manager.closePostgresConnection()
+
 
 
     # postgres_manager.select_data(2)
