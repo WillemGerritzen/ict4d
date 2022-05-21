@@ -1,6 +1,8 @@
 import requests
 import pandas as pd
 from app.connect_db import *
+from datetime import date,timedelta
+
 APIKEY = 'e278b3cd7d40437755cf3f4a91bbd0d3'
 BASE_URL = 'https://api.openweathermap.org/data/2.5/onecall'
 GEO_URL = 'http://api.openweathermap.org/geo/1.0/direct?'
@@ -26,7 +28,7 @@ def get_location(query):
         return -1
 
 
-def get_weather(query, days=1):
+def get_weather(query):
     """
     get weather data
     """
@@ -35,25 +37,24 @@ def get_weather(query, days=1):
         r = requests.get(BASE_URL, params={
                          'lat': location['lat'], 'lon': location['lon'], 'exclude': 'houryly,current,minutely,alerts', 'appid': APIKEY})
         data = r.json()
-        # print(data['daily'])
-        for i in data['daily']:
-            print(i)
-            break
         result = {}
         result['location'] = query
         result['weather'] = []
-        dayNumber = str(datetime.now().date())
+
+        now = date.today()
+        dayNumber = now
         for day_weather in data['daily']:
             result['weather'].append({
                 'date': dayNumber,
                 'main': day_weather['weather'][0]['main'],
                 'description': day_weather['weather'][0]['description'] ,
                 'temp_min': round(day_weather['temp']['min'], 2),
-                'temp_max': round(day_weather['temp']['min'], 2),
+                'temp_max': round(day_weather['temp']['max'], 2),
                 'wind_speed': round(day_weather['wind_speed'], 2),
                 'humidity': round(day_weather['humidity'], 2)
             })
-            dayNumber = str(datetime.strptime(dayNumber,'%Y-%m-%d')+timedelta(days=1))[:10]
+
+            dayNumber = dayNumber + timedelta(days=1)
         return result
 
 def init_database():
@@ -61,7 +62,7 @@ def init_database():
     df_Result = pd.DataFrame(columns=['date','location', 'main', 'description', 'temp_min','temp_max','wind_speed','humidity'])
     conn = PostgresBaseManager().engine
     for city in cityList:
-        a = get_weather(city, 4)
+        a = get_weather(city)
         print(a['weather'])
         df = pd.DataFrame(a['weather'])
         df['location'] = a['location']
